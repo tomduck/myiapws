@@ -23,7 +23,7 @@
 Overview:
 
   This package implements the IAWPS 1992 formulas for thermodynamic
-  properties on the coexistence curve of liquid water and vapour.  All
+  properties on the coexistence curve of liquid water and vapor.  All
   functions have temperature (K) as the sole argument.
 
 References:
@@ -51,7 +51,7 @@ def _validate(f):
     def decorate(T):
         """Decorator to validates args."""
         if numpy.logical_or(T < 273.16, T > Tc).any():
-            msg = '273.16 <= T <= 647.096 K for water vapour saturation line'
+            msg = '273.16 <= T <= 647.096 K for water vapor saturation line'
             raise ValueError(msg)
         ret = f(T)
         return numpy.asscalar(ret) if numpy.isscalar(ret) else ret
@@ -68,8 +68,8 @@ pc = 22.064e6  # Pa
 rhoc = 322.    # kg/m3
 
 @_validate
-def p(T):
-    """Saturation vapour pressure (Pa)."""
+def psat(T):
+    """Saturation vapor pressure (Pa)."""
     theta = T/Tc
     tau = 1.-theta
     return pc * numpy.exp(1./theta *
@@ -81,14 +81,14 @@ def dpdT(T):
     """Saturation line slope (Pa/K)."""
     theta = T/Tc
     tau = 1.-theta
-    return p(T)*\
+    return psat(T)*\
       (-Tc/T**2 * (_a[0]*tau+_a[1]*tau**1.5+_a[2]*tau**3+_a[3]*tau**3.5+\
                    _a[4]*tau**4+_a[5]*tau**7.5) - \
        1./T * (_a[0]+_a[1]*1.5*tau**0.5+_a[2]*3*tau**2+_a[3]*3.5*tau**2.5+\
                _a[4]*4*tau**3+_a[5]*7.5*tau**6.5))
 
 @_validate
-def rhop(T):
+def rhosat_liquid(T):
     """Density of the saturated liquid (kg/m3)."""
     theta = T/Tc
     tau = 1.-theta
@@ -96,8 +96,8 @@ def rhop(T):
                  _b[3]*tau**(16./3)+_b[4]*tau**(43./3)+_b[5]*tau**(110./3))
 
 @_validate
-def rhopp(T):
-    """Density of the saturated vapour (kg/m3)."""
+def rhosat_vapor(T):
+    """Density of the saturated vapor (kg/m3)."""
     theta = T/Tc
     tau = 1.-theta
     return rhoc*numpy.exp(_c[0]*tau**(2./6)+_c[1]*tau**(4./6)+\
@@ -105,24 +105,24 @@ def rhopp(T):
                           _c[4]*tau**(37./6)+_c[5]*tau**(71./6))
 
 @_validate
-def hp(T):
+def hsat_liquid(T):
     """Specific enthalpy of the saturated liquid (J/kg)."""
-    return _alpha(T) + T/rhop(T)*dpdT(T)
+    return _alpha(T) + T/rhosat_liquid(T)*dpdT(T)
 
 @_validate
-def hpp(T):
-    """Specific enthalpy of the saturated liquid (J/kg)."""
-    return _alpha(T) + T/rhopp(T)*dpdT(T)
+def hsat_vapor(T):
+    """Specific enthalpy of the saturated vapor (J/kg)."""
+    return _alpha(T) + T/rhosat_vapor(T)*dpdT(T)
 
 @_validate
-def sp(T):
+def ssat_liquid(T):
     """Specific entropy of the saturated liquid (J/kg/K)."""
-    return _phi(T)+1/rhop(T)*dpdT(T)
+    return _phi(T)+1/rhosat_liquid(T)*dpdT(T)
 
 @_validate
-def spp(T):
-    """Specific entropy of the saturated liquid (J/kg/K)."""
-    return _phi(T)+1/rhopp(T)*dpdT(T)
+def ssat_vapor(T):
+    """Specific entropy of the saturated vapor (J/kg/K)."""
+    return _phi(T)+1/rhosat_vapor(T)*dpdT(T)
 
 
 # PRIVATE --------------------------------------------------------------------

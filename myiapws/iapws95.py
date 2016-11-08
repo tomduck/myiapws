@@ -303,8 +303,8 @@ def rhosat(T):
 
     # Initial guesses for delta' and delta''.  In practice the guesses have
     # to be accurate near the critical point.
-    dp = iapws92.rhop(T)/rhoc
-    dpp = iapws92.rhopp(T)/rhoc
+    dp = iapws92.rhosat_liquid(T)/rhoc
+    dpp = iapws92.rhosat_vapor(T)/rhoc
 
     tau = Tc/T
 
