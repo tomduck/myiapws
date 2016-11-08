@@ -61,17 +61,17 @@ class Test_public(unittest.TestCase):
         else:
             self.assert_(isclose.all())
 
-    def test_p(self):
+    def test_psat(self):
         """Tests the saturation pressure."""
 
-        self.assert_close(p(self.T1), 611.657, rtol=1.e-6)
-        self.assert_close(p(self.T2), 0.101325e6, rtol=1.e-6)
-        self.assert_close(p(self.T3), 22.064e6, rtol=1.e-5)
-        self.assert_close(p(self.T), [611.657, 0.101325e6, 22.064e6],
+        self.assert_close(psat(self.T1), 611.657, rtol=1.e-6)
+        self.assert_close(psat(self.T2), 0.101325e6, rtol=1.e-6)
+        self.assert_close(psat(self.T3), 22.064e6, rtol=1.e-5)
+        self.assert_close(psat(self.T), [611.657, 0.101325e6, 22.064e6],
                           rtol=1.e-5)
 
         # Make sure masked values don't cause an error
-        self.assertEqual(p(numpy.ma.masked_values(Tc, Tc)).mask, True)
+        self.assertEqual(psat(numpy.ma.masked_values(Tc, Tc)).mask, True)
 
     def test_dpdT(self):
         """Tests the saturation line slope."""
@@ -81,51 +81,53 @@ class Test_public(unittest.TestCase):
         self.assert_close(dpdT(self.T), [44.436693, 3.616e3, 268.e3],
                           rtol=1.e-3)
 
-    def test_rhop(self):
+    def test_rhosat_liquid(self):
         """Tests the saturation liquid density."""
-        self.assert_close(rhop(self.T1), 999.789, rtol=1.e-6)
-        self.assert_close(rhop(self.T2), 958.365, rtol=1.e-6)
-        self.assert_close(rhop(self.T3), 322., rtol=1.e-3)
-        self.assert_close(rhop(self.T), [999.7897, 958.365, 322.], rtol=1.e-3)
-
-    def test_rhopp(self):
-        """Tests the saturation vapour density."""
-        self.assert_close(rhopp(self.T1), 0.00485426, rtol=1.e-6)
-        self.assert_close(rhopp(self.T2), 0.597586, rtol=1.e-6)
-        self.assert_close(rhopp(self.T3), 322., rtol=1.e-3)
-        self.assert_close(rhopp(self.T), [0.00485426, 0.597586, 322.],
+        self.assert_close(rhosat_liquid(self.T1), 999.789, rtol=1.e-6)
+        self.assert_close(rhosat_liquid(self.T2), 958.365, rtol=1.e-6)
+        self.assert_close(rhosat_liquid(self.T3), 322., rtol=1.e-3)
+        self.assert_close(rhosat_liquid(self.T), [999.7897, 958.365, 322.],
                           rtol=1.e-3)
 
-    def test_hp(self):
+    def test_rhosat_vapor(self):
+        """Tests the saturation vapor density."""
+        self.assert_close(rhosat_vapor(self.T1), 0.00485426, rtol=1.e-6)
+        self.assert_close(rhosat_vapor(self.T2), 0.597586, rtol=1.e-6)
+        self.assert_close(rhosat_vapor(self.T3), 322., rtol=1.e-3)
+        self.assert_close(rhosat_vapor(self.T), [0.00485426, 0.597586, 322.],
+                          rtol=1.e-3)
+
+    def test_hsat_liquid(self):
         """Tests the saturation liquid enthalpy."""
-        self.assert_close(hp(self.T1), 0.611786, rtol=1.e-6)
-        self.assert_close(hp(self.T2), 419.05e3, rtol=2.e-5)
-        self.assert_close(hp(self.T3), 2086.6e3, rtol=2.e-5)
-        self.assert_close(hp(self.T), [0.611786, 419.05e3, 2086.6e3],
+        self.assert_close(hsat_liquid(self.T1), 0.611786, rtol=1.e-6)
+        self.assert_close(hsat_liquid(self.T2), 419.05e3, rtol=2.e-5)
+        self.assert_close(hsat_liquid(self.T3), 2086.6e3, rtol=2.e-5)
+        self.assert_close(hsat_liquid(self.T), [0.611786, 419.05e3, 2086.6e3],
                           rtol=2.e-5)
 
-    def test_hpp(self):
-        """Tests the saturation vapour enthalpy."""
-        self.assert_close(hpp(self.T1), 2500.5e3, rtol=2.e-5)
-        self.assert_close(hpp(self.T2), 2675.7e3, rtol=1.e-5)
-        self.assert_close(hpp(self.T3), 2086.6e3, rtol=2.e-5)
-        self.assert_close(hpp(self.T), [2500.5e3, 2675.7e3, 2086.6e3],
+    def test_hsat_vapor(self):
+        """Tests the saturation vapor enthalpy."""
+        self.assert_close(hsat_vapor(self.T1), 2500.5e3, rtol=2.e-5)
+        self.assert_close(hsat_vapor(self.T2), 2675.7e3, rtol=1.e-5)
+        self.assert_close(hsat_vapor(self.T3), 2086.6e3, rtol=2.e-5)
+        self.assert_close(hsat_vapor(self.T), [2500.5e3, 2675.7e3, 2086.6e3],
                           rtol=2.e-5)
 
-    def test_sp(self):
+    def test_ssat_liquid(self):
         """Tests the saturation liquid entropy."""
-        self.assert_close(sp(self.T1), 0., atol=1.e-5)
-        self.assert_close(sp(self.T2), 1.307e3, rtol=1.e-4)
-        self.assert_close(sp(self.T3), 4.410e3, rtol=1.e-4)
-        self.assert_close(sp(self.T), [0., 1.307e3, 4.410e3], rtol=1.e-4,
-                          atol=1.e-5)
+        self.assert_close(ssat_liquid(self.T1), 0., atol=1.e-5)
+        self.assert_close(ssat_liquid(self.T2), 1.307e3, rtol=1.e-4)
+        self.assert_close(ssat_liquid(self.T3), 4.410e3, rtol=1.e-4)
+        self.assert_close(ssat_liquid(self.T), [0., 1.307e3, 4.410e3],
+                          rtol=1.e-4, atol=1.e-5)
 
-    def test_spp(self):
-        """Tests the saturation vapour entropy."""
-        self.assert_close(spp(self.T1), 9.154e3, rtol=1.e-4)
-        self.assert_close(spp(self.T2), 7.355e3, rtol=1.e-4)
-        self.assert_close(spp(self.T3), 4.410e3, rtol=1.e-4)
-        self.assert_close(spp(self.T), [9.154e3, 7.355e3, 4.410e3], rtol=1.e-4)
+    def test_ssat_vapor(self):
+        """Tests the saturation vapor entropy."""
+        self.assert_close(ssat_vapor(self.T1), 9.154e3, rtol=1.e-4)
+        self.assert_close(ssat_vapor(self.T2), 7.355e3, rtol=1.e-4)
+        self.assert_close(ssat_vapor(self.T3), 4.410e3, rtol=1.e-4)
+        self.assert_close(ssat_vapor(self.T), [9.154e3, 7.355e3, 4.410e3],
+                          rtol=1.e-4)
 
 
 class Test_private(unittest.TestCase):
@@ -156,7 +158,7 @@ class Test_private(unittest.TestCase):
         self.assert_close(iapws92._phi(self.T3), 3.578e3, rtol=1.e-4)
 
 
-def _run_tests():
+def run_tests():
     """Runs the unit tests."""
     Nerrors = 0
     Nfailures = 0
@@ -176,4 +178,4 @@ def _run_tests():
 
 
 if __name__ == '__main__':
-    sys.exit(_run_tests())
+    sys.exit(run_tests())

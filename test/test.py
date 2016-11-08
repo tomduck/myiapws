@@ -23,9 +23,9 @@
 import unittest
 import sys
 
-import test_iapws95
-import test_iapws92
-import test_iapws11
+import test_iapws1995
+import test_iapws1992
+import test_iapws2011
 
 _VERBOSE = False  # Flag for unit test verbosity
 
@@ -35,9 +35,9 @@ def run_tests():
     Nerrors = 0
     Nfailures = 0
 
-    for Test in [test_iapws95.Test_public, test_iapws95.Test_private,
-                 test_iapws92.Test_public, test_iapws92.Test_private,
-                 test_iapws11.Test_public]:
+    for Test in [test_iapws1995.Test_public, test_iapws1995.Test_private,
+                 test_iapws1992.Test_public, test_iapws1992.Test_private,
+                 test_iapws2011.Test_public]:
         suite = unittest.makeSuite(Test)
         result = unittest.TextTestRunner(verbosity=2 if _VERBOSE else 1)\
           .run(suite)
