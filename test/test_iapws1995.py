@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Unit tests for myiapws.iapws95 module."""
+"""Unit tests for myiapws.iapws1995 module."""
 
 # References:
 #
@@ -47,8 +47,8 @@ import unittest
 
 import numpy
 
-from myiapws import iapws95
-from myiapws.iapws95 import *
+from myiapws import iapws1995
+from myiapws.iapws1995 import *
 
 _VERBOSE = False  # Flag for unit test verbosity
 
@@ -362,7 +362,7 @@ class Test_public(unittest.TestCase):
     def test_B(self):
         """Tests second virial coefficient, B(T)."""
 
-        rho = iapws95._DELTAMIN*rhoc
+        rho = iapws1995._DELTAMIN*rhoc
 
         def get_mu(rho, T):
             """Returns (T * dB/dT - BT)/cp."""
@@ -527,85 +527,85 @@ class Test_private(unittest.TestCase):
 
     def test_arrays(self):
         """Tests array lengths."""
-        self.assertEqual(len(iapws95._no), 8)
-        self.assertEqual(len(iapws95._gammao), 8)
-        self.assertEqual(len(iapws95._c), 51)
-        self.assertEqual(len(iapws95._d), 54)
-        self.assertEqual(len(iapws95._t), 54)
-        self.assertEqual(len(iapws95._n), 56)
-        self.assertEqual(len(iapws95._a), 2)
-        self.assertEqual(len(iapws95._b), 2)
-        self.assertEqual(len(iapws95._B), 2)
-        self.assertEqual(len(iapws95._alpha), 3)
-        self.assertEqual(len(iapws95._beta1), 3)
-        self.assertEqual(len(iapws95._gamma), 3)
-        self.assertEqual(len(iapws95._epsilon), 3)
-        self.assertEqual(len(iapws95._C), 2)
-        self.assertEqual(len(iapws95._D), 2)
-        self.assertEqual(len(iapws95._A), 2)
-        self.assertEqual(len(iapws95._beta2), 2)
+        self.assertEqual(len(iapws1995._no), 8)
+        self.assertEqual(len(iapws1995._gammao), 8)
+        self.assertEqual(len(iapws1995._c), 51)
+        self.assertEqual(len(iapws1995._d), 54)
+        self.assertEqual(len(iapws1995._t), 54)
+        self.assertEqual(len(iapws1995._n), 56)
+        self.assertEqual(len(iapws1995._a), 2)
+        self.assertEqual(len(iapws1995._b), 2)
+        self.assertEqual(len(iapws1995._B), 2)
+        self.assertEqual(len(iapws1995._alpha), 3)
+        self.assertEqual(len(iapws1995._beta1), 3)
+        self.assertEqual(len(iapws1995._gamma), 3)
+        self.assertEqual(len(iapws1995._epsilon), 3)
+        self.assertEqual(len(iapws1995._C), 2)
+        self.assertEqual(len(iapws1995._D), 2)
+        self.assertEqual(len(iapws1995._A), 2)
+        self.assertEqual(len(iapws1995._beta2), 2)
 
     def test_phio(self):
         """Tests _phio()."""
-        self.assert_close(iapws95._phio(838.025/rhoc, Tc/500), 0.204797733e1)
-        self.assert_close(iapws95._phio(358/rhoc, Tc/647), -0.156319605e1)
+        self.assert_close(iapws1995._phio(838.025/rhoc, Tc/500), 0.204797733e1)
+        self.assert_close(iapws1995._phio(358/rhoc, Tc/647), -0.156319605e1)
 
     def test_phio_delta(self):
         """Tests _phio_delta()."""
-        self.assert_close(iapws95._phio_delta(838.025/rhoc), 0.384236747)
-        self.assert_close(iapws95._phio_delta(358/rhoc), 0.899441341)
+        self.assert_close(iapws1995._phio_delta(838.025/rhoc), 0.384236747)
+        self.assert_close(iapws1995._phio_delta(358/rhoc), 0.899441341)
 
     def test_phio_deltadelta(self):
         """Tests _phio_deltadelta()."""
-        self.assert_close(iapws95._phio_deltadelta(838.025/rhoc), -0.147637878)
-        self.assert_close(iapws95._phio_deltadelta(358/rhoc), -0.808994726)
+        self.assert_close(iapws1995._phio_deltadelta(838.025/rhoc), -0.147637878)
+        self.assert_close(iapws1995._phio_deltadelta(358/rhoc), -0.808994726)
 
     def test_phio_tau(self):
         """Tests _phio_tau()."""
-        self.assert_close(iapws95._phio_tau(Tc/500), 0.904611106e1)
-        self.assert_close(iapws95._phio_tau(Tc/647), 0.980343918e1)
+        self.assert_close(iapws1995._phio_tau(Tc/500), 0.904611106e1)
+        self.assert_close(iapws1995._phio_tau(Tc/647), 0.980343918e1)
 
     def test_phio_tautau(self):
         """Tests _phio_tautau()."""
-        self.assert_close(iapws95._phio_tautau(Tc/500), -0.193249185e1)
-        self.assert_close(iapws95._phio_tautau(Tc/647), -0.343316334e1)
+        self.assert_close(iapws1995._phio_tautau(Tc/500), -0.193249185e1)
+        self.assert_close(iapws1995._phio_tautau(Tc/647), -0.343316334e1)
 
     def test_phir(self):
         """Tests _phir()."""
-        self.assert_close(iapws95._phir(838.025/rhoc, Tc/500), -0.342693206e1)
-        self.assert_close(iapws95._phir(358/rhoc, Tc/647), -0.121202657e1)
+        self.assert_close(iapws1995._phir(838.025/rhoc, Tc/500), -0.342693206e1)
+        self.assert_close(iapws1995._phir(358/rhoc, Tc/647), -0.121202657e1)
 
     def test_phir_delta(self):
         """Tests _phir_delta."""
-        self.assert_close(iapws95._phir_delta(838.025/rhoc, Tc/500),
+        self.assert_close(iapws1995._phir_delta(838.025/rhoc, Tc/500),
                           -0.364366650)
-        self.assert_close(iapws95._phir_delta(358/rhoc, Tc/647), -0.714012024)
+        self.assert_close(iapws1995._phir_delta(358/rhoc, Tc/647), -0.714012024)
 
     def test_phir_deltadelta(self):
         """Tests_phir_deltadelta()."""
-        self.assert_close(iapws95._phir_deltadelta(838.025/rhoc, Tc/500),
+        self.assert_close(iapws1995._phir_deltadelta(838.025/rhoc, Tc/500),
                           0.856063701)
-        self.assert_close(iapws95._phir_deltadelta(358/rhoc, Tc/647),
+        self.assert_close(iapws1995._phir_deltadelta(358/rhoc, Tc/647),
                           0.475730696)
 
     def test_phir_tau(self):
         """Tests _phir_tau."""
-        self.assert_close(iapws95._phir_tau(838.025/rhoc, Tc/500),
+        self.assert_close(iapws1995._phir_tau(838.025/rhoc, Tc/500),
                           -0.581403435e1)
-        self.assert_close(iapws95._phir_tau(358/rhoc, Tc/647), -0.321722501e1)
+        self.assert_close(iapws1995._phir_tau(358/rhoc, Tc/647), -0.321722501e1)
 
     def test_phir_tautau(self):
         """Tests _phir_tautau()."""
-        self.assert_close(iapws95._phir_tautau(838.025/rhoc, Tc/500),
+        self.assert_close(iapws1995._phir_tautau(838.025/rhoc, Tc/500),
                           -0.223440737e1)
-        self.assert_close(iapws95._phir_tautau(358/rhoc, Tc/647),
+        self.assert_close(iapws1995._phir_tautau(358/rhoc, Tc/647),
                           -0.996029507e1)
 
     def test_phir_deltatau(self):
         """Tests _phir_deltatau."""
-        self.assert_close(iapws95._phir_deltatau(838.025/rhoc, Tc/500),
+        self.assert_close(iapws1995._phir_deltatau(838.025/rhoc, Tc/500),
                           -0.112176915e1)
-        self.assert_close(iapws95._phir_deltatau(358/rhoc, Tc/647),
+        self.assert_close(iapws1995._phir_deltatau(358/rhoc, Tc/647),
                           -0.133214720e1)
 
 

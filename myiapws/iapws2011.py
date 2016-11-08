@@ -1,4 +1,4 @@
-# iapws11.py: Library for IAPWS 2011 melting and sublimation curves of water
+# iapws2011.py: Library for IAPWS 2011 melting and sublimation curves of water
 
 # Copyright (C) 2014, 2016 Thomas J. Duck
 #

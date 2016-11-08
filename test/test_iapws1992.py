@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Unit tests for myiapws.iapws92 module."""
+"""Unit tests for myiapws.iapws1992 module."""
 
 # All test values are from Table 1 in [1].
 
@@ -39,8 +39,8 @@ import unittest
 
 import numpy
 
-from myiapws import iapws92
-from myiapws.iapws92 import *
+from myiapws import iapws1992
+from myiapws.iapws1992 import *
 
 _VERBOSE = False  # Flag for unit test verbosity
 
@@ -147,15 +147,15 @@ class Test_private(unittest.TestCase):
 
     def test_alpha(self):
         """Tests auxiliary quantity for specific enthalpy."""
-        self.assert_close(iapws92._alpha(self.T1), -11.529101)
-        self.assert_close(iapws92._alpha(self.T2), 417.65e3, rtol=1.e-5)
-        self.assert_close(iapws92._alpha(self.T3), 1548e3, rtol=1.e-4)
+        self.assert_close(iapws1992._alpha(self.T1), -11.529101)
+        self.assert_close(iapws1992._alpha(self.T2), 417.65e3, rtol=1.e-5)
+        self.assert_close(iapws1992._alpha(self.T3), 1548e3, rtol=1.e-4)
 
     def test_phi(self):
         """Tests auxiliary quantity for specific entropy."""
-        self.assert_close(iapws92._phi(self.T1), -0.04, rtol=2.e-1)
-        self.assert_close(iapws92._phi(self.T2), 1.303e3, rtol=2.e-4)
-        self.assert_close(iapws92._phi(self.T3), 3.578e3, rtol=1.e-4)
+        self.assert_close(iapws1992._phi(self.T1), -0.04, rtol=2.e-1)
+        self.assert_close(iapws1992._phi(self.T2), 1.303e3, rtol=2.e-4)
+        self.assert_close(iapws1992._phi(self.T3), 3.578e3, rtol=1.e-4)
 
 
 def run_tests():

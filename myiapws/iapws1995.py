@@ -1,4 +1,4 @@
-# iapws95.py: Library for IAPWS 1995 thermodynamic properties of water
+# iapws1995.py: Library for IAPWS 1995 thermodynamic properties of water
 
 # Copyright (C) 2014, 2016 Thomas J. Duck
 #
@@ -61,7 +61,7 @@ import functools
 import numpy
 from numpy import exp as _exp
 
-from . import iapws92
+from . import iapws1992
 
 _NMAX = 10          # The max number of iterations in the saturation calculation
 _THRES = 1.e-12     # The convergence threshold in the saturation calculation
@@ -303,8 +303,8 @@ def rhosat(T):
 
     # Initial guesses for delta' and delta''.  In practice the guesses have
     # to be accurate near the critical point.
-    dp = iapws92.rhosat_liquid(T)/rhoc
-    dpp = iapws92.rhosat_vapor(T)/rhoc
+    dp = iapws1992.rhosat_liquid(T)/rhoc
+    dpp = iapws1992.rhosat_vapor(T)/rhoc
 
     tau = Tc/T
 

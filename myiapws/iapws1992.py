@@ -1,4 +1,4 @@
-# iapws92.py: Library for IAPWS 1992 saturation properties of water
+# iapws1992.py: Library for IAPWS 1992 saturation properties of water
 
 # Copyright (C) 2014, 2016 Thomas J. Duck
 #

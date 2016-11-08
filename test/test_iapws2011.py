@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Unit tests for myiapws.iapws11 module."""
+"""Unit tests for myiapws.iapws2011 module."""
 
 # All test values are from Table 1 in [1].
 
@@ -39,7 +39,7 @@ import sys
 
 import numpy
 
-from myiapws.iapws11 import *
+from myiapws.iapws2011 import *
 
 _VERBOSE = False  # Flag for unit test verbosity
 
