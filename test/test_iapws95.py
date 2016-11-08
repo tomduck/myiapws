@@ -20,6 +20,22 @@
 
 """Unit tests for myiapws.iapws95 module."""
 
+# References:
+#
+#   [1] Revised release on the IAPWS formulation 1995 for the thermodynamic
+#       properties of ordinary water substance for general and scientific use
+#
+#       IAPWS, 2014.
+#
+#       http://iapws.org/relguide/IAPWS95-2014.pdf
+#
+#   [2] The IAPWS formulation 1995 for the thermodynamic properties of
+#       ordinary water substance for general and scientific use
+#
+#        Wagner, W., and A. Pruss, J. Phys. Chem. Ref. Data, 31, 387-535, 2002.
+#
+#       http://www.nist.gov/data/PDFfiles/jpcrd617.pdf
+
 # Test data from both references [1] and [2] are used.  For quantities where
 # test data is not given, thermodynamic identities are checked.
 

@@ -1,6 +1,5 @@
-#! /usr/bin/env python3
-
 # iapws95.py: Library for IAPWS 1995 thermodynamic properties of water
+
 # Copyright (C) 2014, 2016 Thomas J. Duck
 #
 # Thomas J. Duck <tomduck@tomduck.ca>
@@ -19,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""IAPWS 1995 thermodynamic properties of fluid water
+"""IAPWS 1995 thermodynamic properties of ordinary water substance.
 
 Overview:
 
@@ -67,8 +66,6 @@ from . import iapws92
 _NMAX = 10          # The max number of iterations in the saturation calculation
 _THRES = 1.e-12     # The convergence threshold in the saturation calculation
 _DELTAMIN = 1.e-20  # The delta used in virial coefficient calculations
-
-_VERBOSE = False  # Flag for unit test verbosity
 
 
 # HELPER FUNCTIONS -----------------------------------------------------------
