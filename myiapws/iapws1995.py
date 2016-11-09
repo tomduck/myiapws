@@ -63,7 +63,7 @@ from numpy import exp as _exp
 
 from . import iapws1992
 
-_NMAX = 10          # The max number of iterations in the saturation calculation
+_NMAX = 20          # The max number of iterations in the saturation calculation
 _THRES = 1.e-12     # The convergence threshold in the saturation calculation
 _DELTAMIN = 1.e-20  # The delta used in virial coefficient calculations
 
