@@ -1,5 +1,3 @@
-#! /usr/bin/env python3
-
 # iapws2006.py: Library for IAPWS 2006 thermodynamic properties of ice Ih
 
 # Copyright (C) 2016 Thomas J. Duck
