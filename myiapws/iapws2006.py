@@ -89,7 +89,7 @@ def f(T, p):
     return _g(T, p) - p*_gp(T, p)
 
 @util.arrayfunc
-def alpha_V(T, p):
+def alpha(T, p):
     """Volumetric thermal expansion coefficient (/K)."""
     return _gTp(T, p)/_gp(T, p)
 

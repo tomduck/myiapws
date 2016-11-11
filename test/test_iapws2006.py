@@ -116,12 +116,12 @@ class Test_public(unittest.TestCase):
                           [0.916709492200e3, 0.916721463419e3,
                            0.941678203297e3])
 
-    def test_alpha_V(self):
-        """Tests the volumetric thermal expansion coefficient alpha_V(T, p)."""
-        self.assert_close(alpha_V(Tt, pt), 0.159863102566e-3)
-        self.assert_close(alpha_V(273.152519, 101325), 0.159841589458e-3)
-        self.assert_close(alpha_V(100, 100e6), 0.25849552820710e-4)
-        self.assert_close(alpha_V([Tt, 273.152519, 100], [pt, 101325, 100e6]),
+    def test_alpha(self):
+        """Tests the volumetric thermal expansion coefficient alpha(T, p)."""
+        self.assert_close(alpha(Tt, pt), 0.159863102566e-3)
+        self.assert_close(alpha(273.152519, 101325), 0.159841589458e-3)
+        self.assert_close(alpha(100, 100e6), 0.25849552820710e-4)
+        self.assert_close(alpha([Tt, 273.152519, 100], [pt, 101325, 100e6]),
                           [0.159863102566e-3, 0.159841589458e-3,
                            0.25849552820710e-4])
 

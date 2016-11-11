@@ -317,7 +317,7 @@ def kappa_s(rho, T):
     """Isentropic compressibility (/Pa)"""
     return 1/(rho*w(rho, T)**2)
 
-def alpha_V(rho, T):
+def alpha(rho, T):
     """Volumetric thermal expansion coefficient (/K)"""
     # https://en.wikipedia.org/wiki/Joule%E2%80%93Thomson_effect
     return (mu(rho, T)*rho*cp(rho, T)+1)/T

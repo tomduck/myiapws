@@ -331,7 +331,7 @@ class Test_public(unittest.TestCase):
         def get_Bs(rho, T):
             """Returns Bs = T v alpha/cp."""
             # From reduction of derivatives
-            return T*alpha_V(rho, T)/(cp(rho, T)*rho)
+            return T*alpha(rho, T)/(cp(rho, T)*rho)
 
         # Test betas from formulation against the identity
         # betas = T v alpha/cp
