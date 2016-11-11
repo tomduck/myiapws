@@ -43,6 +43,7 @@ from myiapws.iapws2011 import *
 
 _VERBOSE = False  # Flag for unit test verbosity
 
+
 class Test_public(unittest.TestCase):
     """Tests public API."""
 
