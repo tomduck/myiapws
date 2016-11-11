@@ -62,6 +62,7 @@ import numpy
 from numpy import exp as _exp
 
 from . import iapws1992
+from . import util
 
 _NMAX = 20          # The max number of iterations in the saturation calculation
 _THRES = 1.e-12     # The convergence threshold in the saturation calculation
@@ -69,46 +70,6 @@ _DELTAMIN = 1.e-20  # The delta used in virial coefficient calculations
 
 
 # HELPER FUNCTIONS -----------------------------------------------------------
-
-def _asscalar(x):
-    """Returns length-1 array value and passes through scalars."""
-    return numpy.asscalar(numpy.asarray(x))
-
-
-# Sum function that allows functions to operate on arrays
-_sum = functools.partial(numpy.sum, axis=-1, keepdims=True)
-
-
-def _arrayfunc(n):
-    """Decorator factory function to adapt functions for array input."""
-
-    def decorator(func):
-        """Decorator to adapt functions for array input."""
-
-        # There are different wrapper choices depending upon the
-        # function's trace
-
-        @functools.wraps(func)
-        def wrapper1(rho, T):
-            """Wrapper for rho,T input, single field output."""
-            rho = rho if numpy.isscalar(rho) else numpy.expand_dims(rho, -1)
-            T = T if numpy.isscalar(T) else numpy.expand_dims(T, -1)
-            ret = func(rho, T)
-            return _asscalar(ret) if numpy.isscalar(ret) else ret.squeeze()
-        wrapper1.__name__ = func.__name__
-
-        @functools.wraps(func)
-        def wrapper2(T):
-            """Wrapper for T input, single field output."""
-            T = T if numpy.isscalar(T) else numpy.expand_dims(T, -1)
-            ret = func(T)
-            return _asscalar(ret) if numpy.isscalar(ret) else ret.squeeze()
-        wrapper2.__name__ = func.__name__
-
-        return wrapper1 if n == 1 else wrapper2
-
-    return decorator
-
 
 def _critical_value(v):
     """Decorator factory function to handle critical-point special case."""
@@ -135,7 +96,7 @@ def _critical_value(v):
             # Use the mask to insert the known critical point values and return
             if mask.any():
                 ret = numpy.where(mask, v, ret)
-            return _asscalar(ret) if numpy.isscalar(ret) else ret
+            return util.asscalar(ret) if numpy.isscalar(ret) else ret
 
         wrapper.__name__ = func.__name__
         return wrapper
@@ -170,28 +131,28 @@ R = 461.51805      # Specific gas constant (J/kg/K);  Ref. [1] eq. 3
 
 # Table 3
 
-@_arrayfunc(1)
+@util.arrayfunc
 @_critical_value(fc)
 def f(rho, T):
     """Helmholtz potential (J/kg)"""
     delta, tau = rho/rhoc, Tc/T
     return R*T * _phi(delta, tau)
 
-@_arrayfunc(1)
+@util.arrayfunc
 @_critical_value(pc)
 def p(rho, T):
     """Pressure (Pa)"""
     delta, tau = rho/rhoc, Tc/T
     return rho*R*T * (1+delta*_phir_delta(delta, tau))
 
-@_arrayfunc(1)
+@util.arrayfunc
 @_critical_value(uc)
 def u(rho, T):
     """Specific internal energy (J/kg)"""
     delta, tau = rho/rhoc, Tc/T
     return R*T * tau * (_phio_tau(tau) + _phir_tau(delta, tau))
 
-@_arrayfunc(1)
+@util.arrayfunc
 @_critical_value(sc)
 def s(rho, T):
     """Specific entropy (J/kg/K)"""
@@ -199,7 +160,7 @@ def s(rho, T):
     return R * (tau * (_phio_tau(tau) + _phir_tau(delta, tau)) - \
             _phio(delta, tau) - _phir(delta, tau))
 
-@_arrayfunc(1)
+@util.arrayfunc
 @_critical_value(hc)
 def h(rho, T):
     """Specific enthalpy (J/kg)"""
@@ -207,14 +168,14 @@ def h(rho, T):
     return R*T * (1 + tau*(_phio_tau(tau) + _phir_tau(delta, tau)) +
                   delta*_phir_delta(delta, tau))
 
-@_arrayfunc(1)
+@util.arrayfunc
 @_critical_value(cvc)
 def cv(rho, T):
     """Isochoric specific heat capacity (J/kg/K)"""
     delta, tau = rho/rhoc, Tc/T
     return -R * tau**2 * (_phio_tautau(tau) + _phir_tautau(delta, tau))
 
-@_arrayfunc(1)
+@util.arrayfunc
 @_critical_value(cpc)
 def cp(rho, T):
     """Isobaric specific heat capacity (J/kg/K)"""
@@ -224,7 +185,7 @@ def cp(rho, T):
          delta*tau*_phir_deltatau(delta, tau))**2 / \
       (1+2*delta*_phir_delta(delta, tau)+delta**2*_phir_deltadelta(delta, tau))
 
-@_arrayfunc(1)
+@util.arrayfunc
 @_critical_value(wc)
 def w(rho, T):
     """Speed of sound (m/s)"""
@@ -235,7 +196,7 @@ def w(rho, T):
                          delta*tau*_phir_deltatau(delta, tau))**2/\
                          (tau**2*(_phio_tautau(tau)+_phir_tautau(delta, tau)))))
 
-@_arrayfunc(1)
+@util.arrayfunc
 @_critical_value(muc)
 def mu(rho, T):
     """Joule-Thomson coefficient (K/Pa)"""
@@ -249,7 +210,7 @@ def mu(rho, T):
               (1 + 2*delta*_phir_delta(delta, tau) + \
                delta**2*_phir_deltadelta(delta, tau)))/(R*rho)
 
-@_arrayfunc(1)
+@util.arrayfunc
 @_critical_value(deltaTc)
 def deltaT(rho, T):
     """Specific isothermal throttling coefficient (J/Pa)"""
@@ -259,7 +220,7 @@ def deltaT(rho, T):
                  (1+2*delta*_phir_delta(delta, tau)+\
                   delta**2*_phir_deltadelta(delta, tau)))/rho
 
-@_arrayfunc(1)
+@util.arrayfunc
 @_critical_value(betasc)
 def betas(rho, T):
     """Isentropic temperature-pressure coefficient (K/Pa)"""
@@ -272,12 +233,12 @@ def betas(rho, T):
               (1+2*delta*_phir_delta(delta, tau)+\
                   delta**2*_phir_deltadelta(delta, tau)))/(rho*R)
 
-@_arrayfunc(2)
+@util.arrayfunc
 def B(T):
     """Second virial coefficient (m^3/kg)"""
     return _phir_delta(_DELTAMIN, Tc/T)/rhoc
 
-@_arrayfunc(2)
+@util.arrayfunc
 def C(T):
     """Third virial coefficient (m^6/kg^2)"""
     return _phir_deltadelta(_DELTAMIN, Tc/T)/rhoc**2
@@ -286,7 +247,11 @@ def C(T):
 ## Saturation functions (ref. [3]) ##
 
 def rhosat(T):
-    """Saturation liquid and vapour densities (kg/m^3)"""
+    """Saturation liquid and vapour densities (kg/m^3).
+
+    This function is experimental.  The iapws1992.rhosat_liquid(T) and
+    iapws1992.rhosat_vapor(T) functions are preferred.
+    """
 
     # This function does its own array and critical point management (rather
     # than by using decorators) because of its unique trace
@@ -331,8 +296,9 @@ def rhosat(T):
     if flag:
         rhol = numpy.where(mask, rhoc, dp*rhoc)
         rhov = numpy.where(mask, rhoc, dpp*rhoc)
-        return _asscalar(rhol) if numpy.isscalar(rhol) else rhol.squeeze(), \
-          _asscalar(rhov) if numpy.isscalar(rhov) else rhov.squeeze(), \
+        return util.asscalar(rhol) if numpy.isscalar(rhol) else \
+          rhol.squeeze(), \
+          util.asscalar(rhov) if numpy.isscalar(rhov) else rhov.squeeze()
 
     else:
         raise RuntimeError('Saturation calculation not converging')
@@ -457,7 +423,7 @@ def _phi(delta, tau):  # Eq. 4
 def _phio(delta, tau):
     """Ideal gas part of the dimensionless Helmholtz potential."""
     return numpy.log(delta) + _no[0] + _no[1]*tau + _no[2]*numpy.log(tau) + \
-      _sum(_no[3:8]*numpy.log(1-_exp(-_gammao[3:8]*tau)))
+      util.sum(_no[3:8]*numpy.log(1-_exp(-_gammao[3:8]*tau)))
 
 def _phio_delta(delta):
     """Partial derivative of phi_o wrt delta."""
@@ -470,13 +436,13 @@ def _phio_deltadelta(delta):
 def _phio_tau(tau):
     """Partial derivative of phi_o wrt tau."""
     return _no[1] + _no[2]/tau + \
-      _sum(_no[3:8]*_gammao[3:8]*((1-_exp(-_gammao[3:8]*tau))**(-1) - 1))
+      util.sum(_no[3:8]*_gammao[3:8]*((1-_exp(-_gammao[3:8]*tau))**(-1) - 1))
 
 def _phio_tautau(tau):
     """Second partial derivative of phi_o wrt delta."""
     return -_no[2]*tau**-2 - \
-      _sum(_no[3:8]*_gammao[3:8]**2*_exp(-_gammao[3:8]*tau)*\
-                (1-_exp(-_gammao[3:8]*tau))**(-2))
+      util.sum(_no[3:8]*_gammao[3:8]**2*_exp(-_gammao[3:8]*tau)*\
+               (1-_exp(-_gammao[3:8]*tau))**(-2))
 
 def _phio_deltatau():
     """Mixed second partial derivative of phi_o wrt delta and tau."""
@@ -491,27 +457,27 @@ def _phir(delta, tau):
     psi = _exp(-_C*(delta-1)**2 - _D*(tau-1)**2)
     theta = (1-tau) + _A*((delta-1)**2)**(1/(2*_beta2))
     Delta = theta**2 + _B*((delta-1)**2)**_a
-    return _sum(_n[0:7]*delta**_d[0:7]*tau**_t[0:7]) \
-      + _sum(_n[7:51]*delta**_d[7:51]*tau**_t[7:51]*\
-                  _exp(-delta**_c[7:51])) \
-      + _sum(_n[51:54]*delta**_d[51:54]*tau**_t[51:54] * \
-                  _exp(-_alpha*(delta-_epsilon)**2 - _beta1*(tau-_gamma)**2)) \
-      + _sum(_n[54:56]*Delta**_b*delta*psi)
+    return util.sum(_n[0:7]*delta**_d[0:7]*tau**_t[0:7]) \
+      + util.sum(_n[7:51]*delta**_d[7:51]*tau**_t[7:51]*\
+                 _exp(-delta**_c[7:51])) \
+      + util.sum(_n[51:54]*delta**_d[51:54]*tau**_t[51:54] * \
+                 _exp(-_alpha*(delta-_epsilon)**2 - _beta1*(tau-_gamma)**2)) \
+      + util.sum(_n[54:56]*Delta**_b*delta*psi)
 
 def _phir_delta(delta, tau):
     """Partial derivative of phi_r wrt delta."""
     psi = _exp(-_C*(delta-1)**2 - _D*(tau-1)**2)
     theta = (1-tau) + _A*((delta-1)**2)**(1/(2*_beta2))
     Delta = theta**2 + _B*((delta-1)**2)**_a
-    return _sum(_n[0:7]*_d[0:7]*delta**(_d[0:7]-1)*tau**_t[0:7]) + \
-      _sum(_n[7:51]*_exp(-delta**_c[7:51]) * \
-                delta**(_d[7:51]-1)*tau**_t[7:51] * \
-                (_d[7:51]-_c[7:51]*delta**_c[7:51])) + \
-      _sum(_n[51:54]*delta**_d[51:54]*tau**_t[51:54] * \
-                _exp(-_alpha*(delta-_epsilon)**2 - \
+    return util.sum(_n[0:7]*_d[0:7]*delta**(_d[0:7]-1)*tau**_t[0:7]) + \
+      util.sum(_n[7:51]*_exp(-delta**_c[7:51]) * \
+               delta**(_d[7:51]-1)*tau**_t[7:51] * \
+               (_d[7:51]-_c[7:51]*delta**_c[7:51])) + \
+      util.sum(_n[51:54]*delta**_d[51:54]*tau**_t[51:54] * \
+               _exp(-_alpha*(delta-_epsilon)**2 - \
                     _beta1*(tau-_gamma)**2) *
                     (_d[51:54]/delta - 2*_alpha*(delta-_epsilon))) +\
-      _sum(_n[54:56]*(Delta**_b*(psi+delta*_pder_psi_delta(psi, delta)) +
+      util.sum(_n[54:56]*(Delta**_b*(psi+delta*_pder_psi_delta(psi, delta)) +
                           _pder_Deltab_delta(Delta, delta, theta)*delta*psi))
 
 def _phir_deltadelta(delta, tau):
@@ -519,37 +485,38 @@ def _phir_deltadelta(delta, tau):
     psi = _exp(-_C*(delta-1)**2 - _D*(tau-1)**2)
     theta = (1-tau) + _A*((delta-1)**2)**(1/(2*_beta2))
     Delta = theta**2 + _B*((delta-1)**2)**_a
-    return _sum(_n[0:7]*_d[0:7]*(_d[0:7]-1)*delta**(_d[0:7]-2)
-                     *tau**_t[0:7])+ \
-      _sum(_n[7:51]*_exp(-delta**_c[7:51])*\
-                (delta**(_d[7:51]-2)*tau**_t[7:51]*\
-                 ((_d[7:51]-_c[7:51]*delta**_c[7:51])*\
-                  (_d[7:51]-1-_c[7:51]*delta**_c[7:51])-_c[7:51]**2*\
-                 delta**_c[7:51]))) +\
-      _sum(_n[51:54]*tau**_t[51:54]*\
-                _exp(-_alpha*(delta-_epsilon)**2-_beta1*(tau-_gamma)**2)*\
-                (-2*_alpha*delta**_d[51:54]+4*_alpha**2*delta**_d[51:54]*\
-                 (delta-_epsilon)**2-4*_d[51:54]*_alpha*delta**(_d[51:54]-1)*\
-                (delta-_epsilon)+\
-                _d[51:54]*(_d[51:54]-1)*delta**(_d[51:54]-2))) + \
-      _sum(_n[54:56]*(Delta**_b*(2*_pder_psi_delta(psi, delta)+\
-          delta*_pder2_psi_delta2(psi, delta))+\
-          2*_pder_Deltab_delta(Delta, delta, theta)*\
-          (psi+delta*_pder_psi_delta(psi, delta))+\
-          _pder2_Deltab_delta2(Delta, delta, theta)*delta*psi))
+    return util.sum(_n[0:7]*_d[0:7]*(_d[0:7]-1)*delta**(_d[0:7]-2)
+                    *tau**_t[0:7])+ \
+      util.sum(_n[7:51]*_exp(-delta**_c[7:51])*\
+               (delta**(_d[7:51]-2)*tau**_t[7:51]*\
+               ((_d[7:51]-_c[7:51]*delta**_c[7:51])*\
+                (_d[7:51]-1-_c[7:51]*delta**_c[7:51])-_c[7:51]**2*\
+               delta**_c[7:51]))) +\
+      util.sum(_n[51:54]*tau**_t[51:54]*\
+               _exp(-_alpha*(delta-_epsilon)**2-_beta1*(tau-_gamma)**2)*\
+               (-2*_alpha*delta**_d[51:54]+4*_alpha**2*delta**_d[51:54]*\
+                (delta-_epsilon)**2-4*_d[51:54]*_alpha*delta**(_d[51:54]-1)*\
+               (delta-_epsilon)+\
+               _d[51:54]*(_d[51:54]-1)*delta**(_d[51:54]-2))) + \
+      util.sum(_n[54:56]*(Delta**_b*(2*_pder_psi_delta(psi, delta)+\
+                                     delta*_pder2_psi_delta2(psi, delta))+\
+                                     2*_pder_Deltab_delta(Delta, delta, theta)*\
+                                     (psi+delta*_pder_psi_delta(psi, delta))+\
+                                     _pder2_Deltab_delta2(Delta, delta, theta)*\
+                                     delta*psi))
 
 def _phir_tau(delta, tau):
     """Partial derivative of phi_r wrt tau."""
     psi = _exp(-_C*(delta-1)**2 - _D*(tau-1)**2)
     theta = (1-tau) + _A*((delta-1)**2)**(1/(2*_beta2))
     Delta = theta**2 + _B*((delta-1)**2)**_a
-    return _sum(_n[0:7]*_t[0:7]*delta**_d[0:7]*tau**(_t[0:7]-1)) +\
-      _sum(_n[7:51]*_t[7:51]*delta**_d[7:51]*tau**(_t[7:51]-1) * \
-                _exp(-delta**_c[7:51])) + \
-      _sum(_n[51:54]*delta**_d[51:54]*tau**_t[51:54] * \
-                _exp(-_alpha*(delta-_epsilon)**2-_beta1*(tau-_gamma)**2) * \
-                (_t[51:54]/tau-2*_beta1*(tau-_gamma))) + \
-      _sum(_n[54:56]*delta*(_pder_Deltab_tau(Delta, theta)*psi + \
+    return util.sum(_n[0:7]*_t[0:7]*delta**_d[0:7]*tau**(_t[0:7]-1)) +\
+      util.sum(_n[7:51]*_t[7:51]*delta**_d[7:51]*tau**(_t[7:51]-1) * \
+               _exp(-delta**_c[7:51])) + \
+      util.sum(_n[51:54]*delta**_d[51:54]*tau**_t[51:54] * \
+               _exp(-_alpha*(delta-_epsilon)**2-_beta1*(tau-_gamma)**2) * \
+               (_t[51:54]/tau-2*_beta1*(tau-_gamma))) + \
+      util.sum(_n[54:56]*delta*(_pder_Deltab_tau(Delta, theta)*psi + \
                                 Delta**_b*_pder_psi_tau(tau, psi)))
 
 def _phir_tautau(delta, tau):
@@ -557,32 +524,32 @@ def _phir_tautau(delta, tau):
     psi = _exp(-_C*(delta-1)**2 - _D*(tau-1)**2)
     theta = (1-tau) + _A*((delta-1)**2)**(1/(2*_beta2))
     Delta = theta**2 + _B*((delta-1)**2)**_a
-    return _sum(_n[0:7]*_t[0:7]*(_t[0:7]-1)*delta**_d[0:7]*\
-                     tau**(_t[0:7]-2)) + \
-      _sum(_n[7:51]*_t[7:51]*(_t[7:51]-1)*delta**_d[7:51] * \
-                tau**(_t[7:51]-2)*_exp(-delta**_c[7:51])) + \
-      _sum(_n[51:54]*delta**_d[51:54]*tau**_t[51:54] * \
-                _exp(-_alpha*(delta-_epsilon)**2-_beta1*(tau-_gamma)**2) * \
-            ((_t[51:54]/tau-2*_beta1*(tau-_gamma))**2-_t[51:54]/tau**2-2*
-             _beta1)) + \
-      _sum(_n[54:56]*delta * (_pder2_Deltab_tau2(Delta, theta)*psi + \
-                2*_pder_Deltab_tau(Delta, theta)*_pder_psi_tau(tau, psi) + \
-                Delta**_b*_pder2_psi_tau2(tau, psi)))
+    return util.sum(_n[0:7]*_t[0:7]*(_t[0:7]-1)*delta**_d[0:7]*\
+                    tau**(_t[0:7]-2)) + \
+      util.sum(_n[7:51]*_t[7:51]*(_t[7:51]-1)*delta**_d[7:51] * \
+               tau**(_t[7:51]-2)*_exp(-delta**_c[7:51])) + \
+      util.sum(_n[51:54]*delta**_d[51:54]*tau**_t[51:54] * \
+               _exp(-_alpha*(delta-_epsilon)**2-_beta1*(tau-_gamma)**2) * \
+               ((_t[51:54]/tau-2*_beta1*(tau-_gamma))**2-_t[51:54]/tau**2-2*
+               _beta1)) + \
+      util.sum(_n[54:56]*delta * (_pder2_Deltab_tau2(Delta, theta)*psi + \
+               2*_pder_Deltab_tau(Delta, theta)*_pder_psi_tau(tau, psi) + \
+               Delta**_b*_pder2_psi_tau2(tau, psi)))
 
 def _phir_deltatau(delta, tau):
     """Mixed second partial derivative of phi_r wrt delta and tau."""
     psi = _exp(-_C*(delta-1)**2 - _D*(tau-1)**2)
     theta = (1-tau) + _A*((delta-1)**2)**(1/(2*_beta2))
     Delta = theta**2 + _B*((delta-1)**2)**_a
-    return _sum(_n[0:7]*_d[0:7]*_t[0:7]*delta**(_d[0:7]-1)*\
-                     tau**(_t[0:7]-1)) + \
-      _sum(_n[7:51]*_t[7:51]*delta**(_d[7:51]-1)*tau**(_t[7:51]-1)* \
-                (_d[7:51]-_c[7:51]*delta**_c[7:51])*_exp(-delta**_c[7:51])) +\
-      _sum(_n[51:54]*delta**_d[51:54]*tau**_t[51:54]* \
-                _exp(-_alpha*(delta-_epsilon)**2-_beta1*(tau-_gamma)**2)* \
-                (_d[51:54]/delta-2*_alpha*(delta-_epsilon))* \
-                (_t[51:54]/tau-2*_beta1*(tau-_gamma))) + \
-      _sum(_n[54:56]*(Delta**_b*(_pder_psi_tau(tau, psi)+\
+    return util.sum(_n[0:7]*_d[0:7]*_t[0:7]*delta**(_d[0:7]-1)*\
+                    tau**(_t[0:7]-1)) + \
+      util.sum(_n[7:51]*_t[7:51]*delta**(_d[7:51]-1)*tau**(_t[7:51]-1)* \
+               (_d[7:51]-_c[7:51]*delta**_c[7:51])*_exp(-delta**_c[7:51])) +\
+      util.sum(_n[51:54]*delta**_d[51:54]*tau**_t[51:54]* \
+               _exp(-_alpha*(delta-_epsilon)**2-_beta1*(tau-_gamma)**2)* \
+               (_d[51:54]/delta-2*_alpha*(delta-_epsilon))* \
+               (_t[51:54]/tau-2*_beta1*(tau-_gamma))) + \
+      util.sum(_n[54:56]*(Delta**_b*(_pder_psi_tau(tau, psi)+\
           delta*_pder2_psi_deltatau(delta, tau, psi))+\
           delta*_pder_Deltab_delta(Delta, delta, theta)*\
           _pder_psi_tau(tau, psi)+_pder_Deltab_tau(Delta, theta)*\
