@@ -96,7 +96,7 @@ def _critical_value(v):
             # Use the mask to insert the known critical point values and return
             if mask.any():
                 ret = numpy.where(mask, v, ret)
-            return util.asscalar(ret) if numpy.isscalar(ret) else ret
+            return util.asscalar(ret) if util.isscalar(ret) else ret
 
         wrapper.__name__ = func.__name__
         return wrapper
@@ -249,17 +249,22 @@ def C(T):
 def rhosat(T):
     """Saturation liquid and vapour densities (kg/m^3).
 
-    This function is experimental.  The iapws1992.rhosat_liquid(T) and
-    iapws1992.rhosat_vapor(T) functions are preferred.
+    This function is is not officially part of IAPWS 1995.  It does, however,
+    calculate saturation densities from the IAPWS 1995 formulation using the
+    method in [3].  The results are consistent with iapws1992.rhosat_liquid(T)
+    and iapws1992.rhosat_vapor(T) to within experimental errors.
     """
 
     # This function does its own array and critical point management (rather
     # than by using decorators) because of its unique trace
 
-    T = T if numpy.isscalar(T) else numpy.expand_dims(T, -1)
+    T = T if util.isscalar(T) else numpy.expand_dims(T, -1)
 
-    # Create a mask for the critical temperature
-    if numpy.any(numpy.logical_and(T < Tt, T > Tc)):
+    # Although the method of [3] can be applied below the triple-point
+    # temperature, it produces incorrect results.  I calculated pressures
+    # from the ice-saturation vapor densities, and they do not agree with the
+    # sublimation pressures in IAPWS 2011
+    if numpy.any(T < Tt) or numpy.any(T > Tc):
         raise ValueError('T must be between Tt and Tc')
 
     # Replace the critical value with something that computes
@@ -270,6 +275,8 @@ def rhosat(T):
     # to be accurate near the critical point.
     dp = iapws1992.rhosat_liquid(T)/rhoc
     dpp = iapws1992.rhosat_vapor(T)/rhoc
+    if util.isscalar(dpp):
+        dpp = util.asscalar(dpp)
 
     tau = Tc/T
 
@@ -296,9 +303,9 @@ def rhosat(T):
     if flag:
         rhol = numpy.where(mask, rhoc, dp*rhoc)
         rhov = numpy.where(mask, rhoc, dpp*rhoc)
-        return util.asscalar(rhol) if numpy.isscalar(rhol) else \
+        return util.asscalar(rhol) if util.isscalar(rhol) else \
           rhol.squeeze(), \
-          util.asscalar(rhov) if numpy.isscalar(rhov) else rhov.squeeze()
+          util.asscalar(rhov) if util.isscalar(rhov) else rhov.squeeze()
 
     else:
         raise RuntimeError('Saturation calculation not converging')
