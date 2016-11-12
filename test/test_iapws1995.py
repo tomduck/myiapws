@@ -50,6 +50,9 @@ import numpy
 from myiapws import iapws1995
 from myiapws.iapws1995 import *
 
+from myiapws import iapws2011
+
+
 _VERBOSE = False  # Flag for unit test verbosity
 
 class Test_public(unittest.TestCase):
@@ -557,7 +560,8 @@ class Test_private(unittest.TestCase):
 
     def test_phio_deltadelta(self):
         """Tests _phio_deltadelta()."""
-        self.assert_close(iapws1995._phio_deltadelta(838.025/rhoc), -0.147637878)
+        self.assert_close(iapws1995._phio_deltadelta(838.025/rhoc),
+                          -0.147637878)
         self.assert_close(iapws1995._phio_deltadelta(358/rhoc), -0.808994726)
 
     def test_phio_tau(self):
