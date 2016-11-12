@@ -42,6 +42,7 @@ import functools
 
 import numpy
 
+from . import util
 
 # Decorator to validate input
 def _validate(func):
@@ -54,7 +55,7 @@ def _validate(func):
             msg = '273.16 <= T <= 647.096 K for water vapor saturation line'
             raise ValueError(msg)
         ret = func(T)
-        return numpy.asscalar(ret) if numpy.isscalar(ret) else ret
+        return util.asscalar(ret) if util.isscalar(ret) else ret
     decorate.__name__ = func.__name__
 
     return decorate
