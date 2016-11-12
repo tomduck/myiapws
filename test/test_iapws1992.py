@@ -70,9 +70,6 @@ class Test_public(unittest.TestCase):
         self.assert_close(psat(self.T), [611.657, 0.101325e6, 22.064e6],
                           rtol=1.e-5)
 
-        # Make sure masked values don't cause an error
-        self.assertEqual(psat(numpy.ma.masked_values(Tc, Tc)).mask, True)
-
     def test_dpdT(self):
         """Tests the saturation line slope."""
         self.assert_close(dpdT(self.T1), 44.436693, rtol=1.e-8)
