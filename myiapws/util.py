@@ -30,6 +30,10 @@ import numpy
 # pylint: disable=redefined-builtin
 sum = functools.partial(numpy.sum, axis=-1, keepdims=True)
 
+def isscalar(x):
+    """Determines if value is a scalar."""
+    return numpy.isscalar(x) or numpy.asarray(x).shape in [(), (1,)]
+
 def asscalar(x):
     """Returns value as a scalar."""
     return numpy.asscalar(numpy.asarray(x))
