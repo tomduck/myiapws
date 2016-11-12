@@ -20,6 +20,8 @@
 
 """Unit tests for myiapws modules."""
 
+# pylint: disable=invalid-name
+
 import unittest
 import sys
 

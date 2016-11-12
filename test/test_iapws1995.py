@@ -50,9 +50,6 @@ import numpy
 from myiapws import iapws1995
 from myiapws.iapws1995 import *
 
-from myiapws import iapws2011
-
-
 _VERBOSE = False  # Flag for unit test verbosity
 
 class Test_public(unittest.TestCase):
