@@ -148,14 +148,14 @@ def p(rho, T):
 @util.arrayfunc
 @_critical_value(uc)
 def u(rho, T):
-    """Specific internal energy (J/kg)"""
+    """Internal energy (J/kg)"""
     delta, tau = rho/rhoc, Tc/T
     return R*T * tau * (_phio_tau(tau) + _phir_tau(delta, tau))
 
 @util.arrayfunc
 @_critical_value(sc)
 def s(rho, T):
-    """Specific entropy (J/kg/K)"""
+    """Entropy (J/kg/K)"""
     delta, tau = rho/rhoc, Tc/T
     return R * (tau * (_phio_tau(tau) + _phir_tau(delta, tau)) - \
             _phio(delta, tau) - _phir(delta, tau))
@@ -163,7 +163,7 @@ def s(rho, T):
 @util.arrayfunc
 @_critical_value(hc)
 def h(rho, T):
-    """Specific enthalpy (J/kg)"""
+    """Enthalpy (J/kg)"""
     delta, tau = rho/rhoc, Tc/T
     return R*T * (1 + tau*(_phio_tau(tau) + _phir_tau(delta, tau)) +
                   delta*_phir_delta(delta, tau))
@@ -171,14 +171,14 @@ def h(rho, T):
 @util.arrayfunc
 @_critical_value(cvc)
 def cv(rho, T):
-    """Isochoric specific heat capacity (J/kg/K)"""
+    """Isochoric heat capacity (J/kg/K)"""
     delta, tau = rho/rhoc, Tc/T
     return -R * tau**2 * (_phio_tautau(tau) + _phir_tautau(delta, tau))
 
 @util.arrayfunc
 @_critical_value(cpc)
 def cp(rho, T):
-    """Isobaric specific heat capacity (J/kg/K)"""
+    """Isobaric heat capacity (J/kg/K)"""
     delta, tau = rho/rhoc, Tc/T
     return -R * tau**2 * (_phio_tautau(tau) + _phir_tautau(delta, tau)) + \
       R*(1+delta*_phir_delta(delta, tau)-\
@@ -213,7 +213,7 @@ def mu(rho, T):
 @util.arrayfunc
 @_critical_value(deltaTc)
 def deltaT(rho, T):
-    """Specific isothermal throttling coefficient (J/Pa)"""
+    """Isothermal throttling coefficient (J/Pa)"""
     delta, tau = rho/rhoc, Tc/T
     return (1 - (1+delta*_phir_delta(delta, tau)-\
                  delta*tau*_phir_deltatau(delta, tau))/\

@@ -107,22 +107,22 @@ def rhosat_vapor(T):
 
 @_validate
 def hsat_liquid(T):
-    """Specific enthalpy of the saturated liquid (J/kg)."""
+    """Enthalpy of the saturated liquid (J/kg)."""
     return _alpha(T) + T/rhosat_liquid(T)*dpdT(T)
 
 @_validate
 def hsat_vapor(T):
-    """Specific enthalpy of the saturated vapor (J/kg)."""
+    """Enthalpy of the saturated vapor (J/kg)."""
     return _alpha(T) + T/rhosat_vapor(T)*dpdT(T)
 
 @_validate
 def ssat_liquid(T):
-    """Specific entropy of the saturated liquid (J/kg/K)."""
+    """Entropy of the saturated liquid (J/kg/K)."""
     return _phi(T)+1/rhosat_liquid(T)*dpdT(T)
 
 @_validate
 def ssat_vapor(T):
-    """Specific entropy of the saturated vapor (J/kg/K)."""
+    """Entropy of the saturated vapor (J/kg/K)."""
     return _phi(T)+1/rhosat_vapor(T)*dpdT(T)
 
 
@@ -146,13 +146,13 @@ _phi0 = _alpha0/Tc
 # Functions
 
 def _alpha(T):
-    """Auxiliary quantity for specific enthalpy."""
+    """Auxiliary quantity for the enthalpy."""
     theta = T/Tc
     return _alpha0*(_d_alpha + _d[0]*theta**-19+_d[1]*theta+_d[2]*theta**4.5+\
                     _d[3]*theta**5+_d[4]*theta**54.5)
 
 def _phi(T):
-    """Auxiliary quantity for specific entropy."""
+    """Auxiliary quantity for the entropy."""
     theta = T/Tc
     return _phi0*(_d_phi+19./20*_d[0]*theta**-20+_d[1]*numpy.log(theta)+\
                   9./7*_d[2]*theta**3.5+5./4*_d[3]*theta**4+\
