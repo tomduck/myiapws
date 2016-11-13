@@ -148,7 +148,7 @@ fig.set_tight_layout(True)
 for p, T, rho in zip(ps, Ts, rhos):
     pyplot.loglog(1/rho, p, 'k-')
 
-pyplot.xlabel(r'Specific volume $\mathregular{(/kg)}$', labelpad=6, fontsize=14)
+pyplot.xlabel(r'Volume $\mathregular{(/kg)}$', labelpad=6, fontsize=14)
 pyplot.ylabel(r'Pressure', fontsize=14)
 
 pyplot.xlim(1.e-4, 1.e5)
