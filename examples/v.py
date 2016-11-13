@@ -26,12 +26,18 @@ optimization is done using Newton's method.  Specific volume is 1/rho.
 
 # pylint: disable=invalid-name
 
+import argparse
+
 import numpy
 from scipy.optimize import newton
 from matplotlib import pyplot
 
 from myiapws import iapws1995, iapws1992
 
+# Parse command-line arguments
+parser = argparse.ArgumentParser()
+parser.add_argument('-o', dest='path')
+path = parser.parse_args().path
 
 # Define a series of temperatures
 T = numpy.linspace(273.2, 373.15, 200)
@@ -47,19 +53,25 @@ rho = numpy.array([newton(lambda x: iapws1995.p(x, T_) - 101325, rho_)
 
 v = 1/rho
 
+
 # Ploting
+
 fig = pyplot.figure(figsize=(5.5, 4))
 
 ax = fig.add_axes([0.17, 0.15, 0.78, 0.8]) # main axes
 ax.plot(T-273.15, v*1000, linewidth=2)
 ax.set_xlim(0, 100)
 ax.set_ylim(0.995, 1.050)
-ax.set_xlabel(r'Temperature $\mathrm{(^\circ C)}$')
-ax.set_ylabel(r'Specific volume $\mathrm{(L/kg)}$')
+ax.set_xlabel(r'Temperature (℃)', fontsize=14)
+ax.set_ylabel(r'Specific volume $\mathregular{(L/kg)}$', fontsize=14)
 
 ax.annotate('', xy=(6, 1.002), xycoords='data',
             xytext=(20, 1.018), textcoords='data',
             arrowprops=dict(arrowstyle="->", connectionstyle="arc3"))
+
+pyplot.gca().xaxis.set_tick_params(pad=6)
+pyplot.gca().yaxis.set_tick_params(pad=6)
+
 
 ax_inset = fig.add_axes([0.31, 0.58, 0.3, 0.3]) # Inset
 ax_inset.plot(T[:100]-273.15, v[:100]*1000., linewidth=2)
@@ -69,4 +81,10 @@ ax_inset.set_ylim(1., 1.0003)
 ax_inset.set_yticks([1., 1.0001, 1.0002, 1.0003])
 ax_inset.set_yticklabels(['1.0000', '1.0001', '1.0002', '1.0003'])
 
-pyplot.show()
+pyplot.gca().xaxis.set_tick_params(pad=6)
+pyplot.gca().yaxis.set_tick_params(pad=6)
+
+if path:
+    pyplot.savefig(path)
+else:
+    pyplot.show()

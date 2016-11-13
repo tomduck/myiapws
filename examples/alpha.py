@@ -27,13 +27,20 @@ to plot alpha(p=101.325 kPa, T).  This requires we first determine the density
 Newton's method.
 """
 
+# pylint: disable=invalid-name
+
+import argparse
+
 import numpy
 from scipy.optimize import newton
 from matplotlib import pyplot
 
 from myiapws import iapws1995
 
-# pylint: disable=invalid-name
+# Parse command-line arguments
+parser = argparse.ArgumentParser()
+parser.add_argument('-o', dest='path')
+path = parser.parse_args().path
 
 # Define a series of temperatures
 T = numpy.linspace(273.2, 373.15, 100)
@@ -54,7 +61,14 @@ alpha = iapws1995.alpha(rho, T)
 # Plotting
 fig = pyplot.figure(figsize=[5, 3.5])
 fig.set_tight_layout(True)
-pyplot.plot(T-273.15, alpha, 'k-', linewidth=2)
-pyplot.xlabel(r'Temperature ($\mathrm{^\circ C}$)')
-pyplot.ylabel(r'Thermal Expansion Coeff ($\mathrm{K^{-1}}$)')
-pyplot.show()
+pyplot.plot(T-273.15, alpha*10000, 'k-', linewidth=2)
+pyplot.gca().xaxis.set_tick_params(pad=6)
+pyplot.gca().yaxis.set_tick_params(pad=6)
+pyplot.xlabel(r'Temperature (℃)', fontsize=14)
+pyplot.ylabel(r'Thermal Exp Coeff '+\
+              r'($\mathregular{\times 10^{-4}\ K^{-1}}$)', fontsize=14)
+
+if path:
+    pyplot.savefig(path)
+else:
+    pyplot.show()

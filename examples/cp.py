@@ -28,12 +28,18 @@ Newton's method.
 
 # pylint: disable=invalid-name
 
+import argparse
+
 import numpy
 from scipy.optimize import newton
 from matplotlib import pyplot
 
 from myiapws import iapws1995
 
+# Parse command-line arguments
+parser = argparse.ArgumentParser()
+parser.add_argument('-o', dest='path')
+path = parser.parse_args().path
 
 # Define a series of temperatures
 T = numpy.linspace(273.2, 373.15, 100)
@@ -55,6 +61,10 @@ cp = iapws1995.cp(rho, T)
 fig = pyplot.figure(figsize=[5, 3.5])
 fig.set_tight_layout(True)
 pyplot.plot(T-273.15, cp, 'k-', linewidth=2)
-pyplot.xlabel(r'Temperature ($\mathrm{^\circ C}$)')
-pyplot.ylabel(r'Specific heat capacity ($\mathrm{J/K/kg }$)')
-pyplot.show()
+pyplot.xlabel(r'Temperature (℃)', fontsize=14)
+pyplot.ylabel(r'Specific heat capacity (J/K/kg)', fontsize=14)
+
+if path:
+    pyplot.savefig(path)
+else:
+    pyplot.show()

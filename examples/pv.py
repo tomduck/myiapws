@@ -22,6 +22,8 @@
 
 # pylint: disable=invalid-name
 
+import argparse
+
 import numpy
 from scipy.optimize import newton
 from matplotlib import pyplot, ticker
@@ -31,6 +33,12 @@ from myiapws import iapws1992, iapws1995, iapws2006, iapws2011
 PMIN = 10
 PMAX = 1e8
 
+# Parse command-line arguments
+parser = argparse.ArgumentParser()
+parser.add_argument('-o', dest='path')
+path = parser.parse_args().path
+
+# Isotherm temperatures and lists for density and pressure arrays
 Tc = iapws1995.Tc - 273.15  # C
 Ts = numpy.array([-25, 0, 40, 100, 200, Tc, 600, 1000, 1500, 2300]) + 273.15 # K
 rhos = []
@@ -140,23 +148,26 @@ fig.set_tight_layout(True)
 for p, T, rho in zip(ps, Ts, rhos):
     pyplot.loglog(1/rho, p, 'k-')
 
-pyplot.xlabel(r'Specific volume $\mathrm{(/kg)}$', labelpad=6)
-pyplot.ylabel(r'Pressure')
+pyplot.xlabel(r'Specific volume $\mathregular{(/kg)}$', labelpad=6, fontsize=14)
+pyplot.ylabel(r'Pressure', fontsize=14)
 
 pyplot.xlim(1.e-4, 1.e5)
 pyplot.ylim(10, 1e8)
 
 ax = pyplot.gca()
-ax.set_xticks([10**n for n in range(-3, 5)])
-ax.set_xticklabels([r'$\mathrm{1\ L}$', '', '',
-                    r'$\mathrm{1\ m^3}$', '', '',
-                    r'$\mathrm{1000\ m^3}$', ''])
 ax.xaxis.set_minor_locator(ticker.FixedLocator([]))
 ax.yaxis.set_minor_locator(ticker.FixedLocator([]))
+ax.set_xticks([10**n for n in range(-3, 5)])
+ax.set_xticklabels([r'$\mathregular{1\ L^{\ }}$', '', '',
+                    r'$\mathregular{1\ m^3}$', '', '',
+                    r'$\mathregular{1000\ m^3}$', ''])
 ax.set_yticks([10**n for n in range(1, 8)])
-ax.set_yticklabels(['', '', r'$\mathrm{1\ kPa}$', '', '',
-                    r'$\mathrm{1\ MPa}$', ''])
-ax.yaxis.set_minor_locator(ticker.FixedLocator([]))
+ax.set_yticklabels(['', '', r'$\mathregular{1\ kPa}$', '', '',
+                    r'$\mathregular{1\ MPa}$', ''])
+
+for label in ax.xaxis.get_ticklabels():
+    label.set_verticalalignment("baseline")
+ax.xaxis.set_tick_params(pad=18)
 
 for p, T, rho in zip(ps, Ts, rhos):
     if T < iapws1995.Tc:
@@ -171,21 +182,20 @@ for p, T, rho in zip(ps, Ts, rhos):
         y = p[i]/2
         s = 'Tc'
         bbox = {}
-    pyplot.text(x, y, s, size=10, color= 'k', ha='center', va='center',
+    pyplot.text(x, y, s, size=10, color='k', ha='center', va='center',
                 bbox=bbox)
-pyplot.text(0.8, 0.85, 'Supercritical\nisotherms:', size=10, color= 'k',
+pyplot.text(0.8, 0.85, 'Supercritical\nisotherms:', size=10, color='k',
             ha='center', va='center', transform=ax.transAxes)
-pyplot.text(0.8, 0.75, '600 C', size=10, color= 'k', ha='center', va='center',
-                transform=ax.transAxes)
-pyplot.text(0.8, 0.68, '1000 C', size=10, color= 'k', ha='center', va='center',
-                transform=ax.transAxes)
-pyplot.text(0.8, 0.61, '1500 C', size=10, color= 'k', ha='center', va='center',
-                transform=ax.transAxes)
-pyplot.text(0.8, 0.54, '2300 C', size=10, color= 'k', ha='center', va='center',
-                transform=ax.transAxes)
+pyplot.text(0.8, 0.75, '600 C', size=10, color='k', ha='center', va='center',
+            transform=ax.transAxes)
+pyplot.text(0.8, 0.68, '1000 C', size=10, color='k', ha='center', va='center',
+            transform=ax.transAxes)
+pyplot.text(0.8, 0.61, '1500 C', size=10, color='k', ha='center', va='center',
+            transform=ax.transAxes)
+pyplot.text(0.8, 0.54, '2300 C', size=10, color='k', ha='center', va='center',
+            transform=ax.transAxes)
 
-ax = pyplot.gca()
-ax.tick_params(axis='x', pad=10)
-
-pyplot.tight_layout()
-pyplot.show()
+if path:
+    pyplot.savefig(path)
+else:
+    pyplot.show()

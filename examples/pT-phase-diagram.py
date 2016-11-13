@@ -22,7 +22,7 @@
 
 # pylint: disable=invalid-name
 
-from __future__ import unicode_literals
+import argparse
 
 import numpy
 from matplotlib import pyplot, ticker
@@ -31,11 +31,16 @@ from myiapws.iapws2011 import pmelt_ice_Ih, pmelt_ice_III, pmelt_ice_V
 from myiapws.iapws2011 import pmelt_ice_VI, pmelt_ice_VII, psubl_ice_Ih
 from myiapws.iapws1992 import psat
 
+# Parse command-line arguments
+parser = argparse.ArgumentParser()
+parser.add_argument('-o', dest='path')
+path = parser.parse_args().path
 
-pyplot.rcParams['ytick.major.pad'] = '5'
-pyplot.rcParams['mathtext.fontset'] = 'stixsans'
+#pyplot.rcParams['ytick.major.pad'] = '5'
+#pyplot.rcParams['mathtext.fontset'] = 'stixsans'
 
 fig = pyplot.figure(figsize=(4.5, 4.5))
+fig.set_tight_layout(True)
 
 T0 = 273.15  # Temperature conversion offset
 
@@ -100,15 +105,15 @@ ax = pyplot.gca()
 
 # x-axis ticks and labels
 ax.set_yticks([10**n for n in range(-7, 5, 2)])
-pyplot.xlabel('$\\mathrm{Temperature\\ (\u00B0C)}$', fontsize=16, labelpad=10)
+pyplot.xlabel('Temperature (℃)', fontsize=14)
 
 # y-axis ticks and labels
 ax.set_yticks([10**n for n in range(-7, 5)])
-ax.set_yticklabels(['', r'$\mathrm{1\ Pa}$', '', '',
-                    r'$\mathrm{1\ kPa}$', '', '',
-                    r'$\mathrm{1\ MPa}$', '', '',
-                    r'$\mathrm{1\ GPa}$', ''], fontsize=14)
-pyplot.ylabel(r'$\mathrm{Pressure}$', fontsize=16)
+ax.set_yticklabels(['', r'$\mathregular{1\ Pa}$', '', '',
+                    r'$\mathregular{1\ kPa}$', '', '',
+                    r'$\mathregular{1\ MPa}$', '', '',
+                    r'$\mathregular{1\ GPa}$', ''])
+pyplot.ylabel(r'Pressure', fontsize=14)
 
 # Axis limits
 pyplot.xlim(190-T0, 720-T0)
@@ -157,5 +162,7 @@ ax_inset.set_yticklabels([])
 ax_inset.set_xlim(273.12-T0, 273.18-T0)
 ax_inset.set_ylim(2.e-4, 1)
 
-pyplot.tight_layout()
-pyplot.show()
+if path:
+    pyplot.savefig(path)
+else:
+    pyplot.show()
