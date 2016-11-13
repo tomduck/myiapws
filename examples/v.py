@@ -54,16 +54,20 @@ rho = numpy.array([newton(lambda x: iapws1995.p(x, T_) - 101325, rho_)
 v = 1/rho
 
 
-# Ploting
+# Plotting
 
 fig = pyplot.figure(figsize=(5.5, 4))
+fig.set_tight_layout(True)
 
-ax = fig.add_axes([0.17, 0.15, 0.78, 0.8]) # main axes
+ax = fig.add_axes([0.15, 0.15, 0.78, 0.75]) # main axes
 ax.plot(T-273.15, v*1000, linewidth=2)
 ax.set_xlim(0, 100)
 ax.set_ylim(0.995, 1.050)
 ax.set_xlabel(r'Temperature (℃)', fontsize=14)
-ax.set_ylabel(r'Specific volume $\mathregular{(L/kg)}$', fontsize=14)
+ax.set_ylabel(r'$\mathregular{(L/kg)}$', fontsize=14)
+
+title = pyplot.title('Volume at 101.325 kPa')
+title.set_position([.5, 1.03])
 
 ax.annotate('', xy=(6, 1.002), xycoords='data',
             xytext=(20, 1.018), textcoords='data',
@@ -73,7 +77,7 @@ pyplot.gca().xaxis.set_tick_params(pad=6)
 pyplot.gca().yaxis.set_tick_params(pad=6)
 
 
-ax_inset = fig.add_axes([0.31, 0.58, 0.3, 0.3]) # Inset
+ax_inset = fig.add_axes([0.29, 0.55, 0.3, 0.3]) # Inset
 ax_inset.plot(T[:100]-273.15, v[:100]*1000., linewidth=2)
 
 ax_inset.set_xlim(0, 10)

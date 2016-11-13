@@ -57,12 +57,16 @@ rho = numpy.array([newton(lambda x: iapws1995.p(x, T_) - 101325, rho_)
 cp = iapws1995.cp(rho, T)
 
 
-# Ploting
+# Plotting
+
 fig = pyplot.figure(figsize=[5, 3.5])
 fig.set_tight_layout(True)
+
 pyplot.plot(T-273.15, cp, 'k-', linewidth=2)
 pyplot.xlabel(r'Temperature (℃)', fontsize=14)
-pyplot.ylabel(r'Specific heat capacity (J/K/kg)', fontsize=14)
+pyplot.ylabel(r'(J/K/kg)', fontsize=14)
+title = pyplot.title('Heat Capacity at 101.325 kPa')
+title.set_position([.5, 1.03])
 
 if path:
     pyplot.savefig(path)

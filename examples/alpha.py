@@ -59,14 +59,18 @@ alpha = iapws1995.alpha(rho, T)
 
 
 # Plotting
+
 fig = pyplot.figure(figsize=[5, 3.5])
 fig.set_tight_layout(True)
+
 pyplot.plot(T-273.15, alpha*10000, 'k-', linewidth=2)
 pyplot.gca().xaxis.set_tick_params(pad=6)
 pyplot.gca().yaxis.set_tick_params(pad=6)
+
 pyplot.xlabel(r'Temperature (℃)', fontsize=14)
-pyplot.ylabel(r'Thermal Exp Coeff '+\
-              r'($\mathregular{\times 10^{-4}\ K^{-1}}$)', fontsize=14)
+pyplot.ylabel(r'($\mathregular{\times 10^{-4}\ K^{-1}}$)', fontsize=14)
+title = pyplot.title('Thermal Expansion Coefficient at 101.325 kPa')
+title.set_position([.5, 1.05])
 
 if path:
     pyplot.savefig(path)
