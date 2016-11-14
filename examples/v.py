@@ -32,7 +32,7 @@ import numpy
 from scipy.optimize import newton
 from matplotlib import pyplot
 
-from myiapws import iapws1995, iapws1992
+from myiapws import iapws1995, iapws1992, iapws2006
 
 # Parse command-line arguments
 parser = argparse.ArgumentParser()
@@ -40,45 +40,53 @@ parser.add_argument('-o', dest='path')
 path = parser.parse_args().path
 
 # Define a series of temperatures
-T = numpy.linspace(273.2, 373.15, 200)
+Tl = numpy.linspace(273.16, 373.15, 200)
 
 # Get the saturation densities
-rho0 = iapws1992.rhosat_liquid(T)
+rho0 = iapws1992.rhosat_liquid(Tl)
 
 # Get the density at normal pressure for this series of temperatures.
 # Use the saturation densities as a first estimate.
 # pylint: disable=cell-var-from-loop
-rho = numpy.array([newton(lambda x: iapws1995.p(x, T_) - 101325, rho_)
-                   for rho_, T_ in zip(rho0, T)])
+rhol = numpy.array([newton(lambda x: iapws1995.p(x, T_) - 101325, rho_)
+                   for rho_, T_ in zip(rho0, Tl)])
 
-v = 1/rho
+vl = 1/rhol
+
+# Ice (solid) temperatures and volumes
+Ts = numpy.linspace(-25, 0, 100) + 273.15
+vs = 1/iapws2006.rho(Ts, 101325)
 
 
 # Plotting
 
 fig = pyplot.figure(figsize=(5.5, 4))
-fig.set_tight_layout(True)
 
 ax = fig.add_axes([0.15, 0.15, 0.78, 0.75]) # main axes
-ax.plot(T-273.15, v*1000, linewidth=2)
-ax.set_xlim(0, 100)
-ax.set_ylim(0.995, 1.050)
-ax.set_xlabel(r'Temperature (℃)', fontsize=14)
+
+ax.plot(Tl-273.15, vl*1000, 'k-', linewidth=2)
+ax.plot(Ts-273.15, vs*1000, 'k-', linewidth=2)
+ax.plot([Tl[0]-273.15, Ts[-1]-273.15], [vl[0]*1000, vs[-1]*1000],
+        'k:', linewidth=2)
+
+ax.set_xlim(-25, 100)
+ax.set_ylim(0.995, 1.100)
+ax.set_xlabel(r'Temperature ($\mathregular{^{\circ}C}$)', fontsize=14)
 ax.set_ylabel(r'$\mathregular{(L/kg)}$', fontsize=14)
 
 title = pyplot.title('Volume at 101.325 kPa')
 title.set_position([.5, 1.03])
 
 ax.annotate('', xy=(6, 1.002), xycoords='data',
-            xytext=(20, 1.018), textcoords='data',
+            xytext=(27, 1.038), textcoords='data',
             arrowprops=dict(arrowstyle="->", connectionstyle="arc3"))
 
 pyplot.gca().xaxis.set_tick_params(pad=6)
 pyplot.gca().yaxis.set_tick_params(pad=6)
 
 
-ax_inset = fig.add_axes([0.29, 0.55, 0.3, 0.3]) # Inset
-ax_inset.plot(T[:100]-273.15, v[:100]*1000., linewidth=2)
+ax_inset = fig.add_axes([0.5, 0.55, 0.3, 0.3]) # Inset
+ax_inset.plot(Tl[:100]-273.15, vl[:100]*1000., 'k-', linewidth=2)
 
 ax_inset.set_xlim(0, 10)
 ax_inset.set_ylim(1., 1.0003)
