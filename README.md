@@ -4,7 +4,7 @@ myiapws
 
 Myiapws is a python library for the calculation of thermophysical properties of water.  It is an implementation of certain formulations from the [International Association for the Properties of Water and Steam](http://www.iapws.org/) (IAPWS).
 
-The primary use of the library is as an educational tool.  The publications describing the formulations map directly to the code.  The interface is simple, fully pythonic and numpy-capable.
+The primary use of the library is as an educational tool.  The publications describing the formulations map directly to the code.  The interfaces are simple, fully pythonic and [numpy](http://www.numpy.org/)-capable.
 
 Developers interested in an advanced thermodynamics package covering over 100 species should check out [COOLPROP](http://www.coolprop.org/).
 
@@ -47,4 +47,18 @@ The modules are internally documented.  Execute `help(<module-name>)` at the pyt
 Examples
 --------
 
-It is not trivial to draw thermodynamic state diagrams from the fundamental equations and their derivatives.
+It is frequently not trivial to draw thermodynamic diagrams given the fundamental equations and their derivatives alone.  The liquid phase formulation, for example, provides thermodynamic functions dependent upon density and temperature.  If one wants to, say, plot heat capacity against pressure and temperature instead then some numerical work needs to be done.
+
+The following examples are given in the `examples/` directory:
+
+  * `cp.py`: Isobaric heat capacity of liquid water at normal pressure versus temperature.
+
+  * `alpha.py`: Volumetric thermal expansion coefficient of liquid water at normal pressure versus temperature.
+
+  * `v.py`: Specific volume of liquid water and ice at normal pressure versus temperature.
+
+  * `pv.py`: Isotherms on pressure-volume axes for ice, liquid water and water vapour.
+
+  * `Ts.py`: Isobars on temperature-entropy axes for liquid water and water vapour.
+
+  * `pT.py`: Coexistence curves for the different mixed-phases of water.
