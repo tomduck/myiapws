@@ -12,11 +12,13 @@ Developers interested in an advanced thermodynamics package covering over 100 sp
 Installation
 ------------
 
-Install into python3 (as root) by executing
+Install into python3 by executing (as root)
 
 ~~~
 # pip3 install git+https://github.com/tomduck/myiapws.git
 ~~~
+
+Alternatively, download the source and run (as root) `setup.py install`.
 
 The library should be tested (as a normal user) by executing
 
