@@ -174,7 +174,7 @@ for p, T, rho in zip(ps, Ts, rhos):
         i = numpy.searchsorted(rho, iapws1995.rhoc)
         x = 10**(-(numpy.log10(rho[i-1]) + numpy.log10(rho[i]))/2)
         y = p[i-1]
-        s = '%.0f $\mathregular{^{\circ}C}$' % (T-273.15)
+        s = r'%.0f $\mathregular{^{\circ}C}$' % (T-273.15)
         bbox = {'ec':'1', 'fc':'1'}
     elif T == iapws1995.Tc:
         i = numpy.searchsorted(rho, iapws1995.rhoc)
@@ -188,11 +188,11 @@ pyplot.text(0.8, 0.85, 'Supercritical\nisotherms:', size=10, color='k',
             ha='center', va='center', transform=ax.transAxes)
 pyplot.text(0.8, 0.75, r'600 $\mathregular{^{\circ}C}$', size=10,
             color='k', ha='center', va='center', transform=ax.transAxes)
-pyplot.text(0.8, 0.68, '1000 $\mathregular{^{\circ}C}$', size=10,
+pyplot.text(0.8, 0.68, r'1000 $\mathregular{^{\circ}C}$', size=10,
             color='k', ha='center', va='center', transform=ax.transAxes)
-pyplot.text(0.8, 0.61, '1500 $\mathregular{^{\circ}C}$', size=10, color='k',
+pyplot.text(0.8, 0.61, r'1500 $\mathregular{^{\circ}C}$', size=10, color='k',
             ha='center', va='center', transform=ax.transAxes)
-pyplot.text(0.8, 0.54, '2300 $\mathregular{^{\circ}C}$', size=10,
+pyplot.text(0.8, 0.54, r'2300 $\mathregular{^{\circ}C}$', size=10,
             color='k', ha='center', va='center', transform=ax.transAxes)
 
 if path:
