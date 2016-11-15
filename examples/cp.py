@@ -63,7 +63,7 @@ fig = pyplot.figure(figsize=[5, 3.5])
 fig.set_tight_layout(True)
 
 pyplot.plot(T-273.15, cp, 'k-', linewidth=2)
-pyplot.xlabel(r'Temperature (℃)', fontsize=14)
+pyplot.xlabel(r'Temperature ($\mathregular{^{\circ}C}$)', fontsize=14)
 pyplot.ylabel(r'(J/K/kg)', fontsize=14)
 title = pyplot.title('Heat Capacity at 101.325 kPa')
 title.set_position([.5, 1.03])

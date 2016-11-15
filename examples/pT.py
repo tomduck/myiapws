@@ -104,7 +104,7 @@ ax = pyplot.gca()
 
 # x-axis ticks and labels
 ax.set_yticks([10**n for n in range(-7, 5, 2)])
-pyplot.xlabel('Temperature (℃)', fontsize=14)
+pyplot.xlabel('Temperature ($\mathregular{^{\circ}C}$)', fontsize=14)
 
 # y-axis ticks and labels
 ax.set_yticks([10**n for n in range(-7, 5)])
@@ -117,6 +117,8 @@ pyplot.ylabel(r'Pressure', fontsize=14)
 # Axis limits
 pyplot.xlim(190-T0, 720-T0)
 pyplot.ylim(1.e-7, 2.e4)
+
+pyplot.tight_layout()
 
 
 # Inset plot ----------
