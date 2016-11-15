@@ -19,9 +19,11 @@ setup(name='myiapws',
     description=DESCRIPTION,
     long_description=DESCRIPTION,
     license='GPL',
-    keywords='pandoc figure numbers filter',
-    url='https://github.com/tomduck/pandoc-fignos',
-    download_url='https://github.com/tomduck/pandoc-fignos/tarball/'+VERSION,
+    keywords='Thermophysical properties of water',
+    url='https://github.com/tomduck/myiapws',
+    download_url='https://github.com/tomduck/myiapws/tarball/'+VERSION,
+
+    install_requires=['numpy', 'matplotlib'],
 
     packages=find_packages(),
 
