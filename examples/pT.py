@@ -40,7 +40,6 @@ path = parser.parse_args().path
 #pyplot.rcParams['mathtext.fontset'] = 'stixsans'
 
 fig = pyplot.figure(figsize=(4.5, 4.5))
-fig.set_tight_layout(True)
 
 T0 = 273.15  # Temperature conversion offset
 
