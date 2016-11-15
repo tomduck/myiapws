@@ -62,3 +62,21 @@ The following examples are given in the `examples/` directory:
   * `Ts.py`: Isobars on temperature-entropy axes for liquid water and water vapour.
 
   * `pT.py`: Coexistence curves for the different mixed-phases of water.
+
+
+Plots
+-----
+
+Below are plots from the examples.
+
+![Heat capacity of liquid water.](https://raw.githubusercontent.com/tomduck/myiapws/master/images/cp.png)
+
+![Volumetric thermal expansion coefficient of liquid water.](https://raw.githubusercontent.com/tomduck/myiapws/master/images/alpha.png)
+
+![Specific volume of liquid water and ice.](https://raw.githubusercontent.com/tomduck/myiapws/master/images/cp.png)
+
+![Pressure-volume isotherms.](https://raw.githubusercontent.com/tomduck/myiapws/master/images/pv.png)
+
+![Temperature-entropy isobars.](https://raw.githubusercontent.com/tomduck/myiapws/master/images/Ts.png)
+
+![Pressure-temperature coexistence curves.](https://raw.githubusercontent.com/tomduck/myiapws/master/images/pT.png)
