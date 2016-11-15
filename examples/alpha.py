@@ -21,10 +21,9 @@
 """Thermal expansion coefficient of liquid water at normal pressure between
 0 and 100 C.
 
-The IAPWS formulation allows us to calculate alpha(rho, T).  However, we want
-to plot alpha(p=101.325 kPa, T).  This requires we first determine the density
-(rho) that solves p(rho, T) = 101.325 kPa.  The optimization is done using
-Newton's method.
+Similar to cp.py, we want to plot alpha(p=101.325 kPa, T).  This requires we
+determine the density (rho) that solves p(rho, T) = 101.325 kPa.  The
+optimization is done using Newton's method.
 """
 
 # pylint: disable=invalid-name

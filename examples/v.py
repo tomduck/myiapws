@@ -18,10 +18,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Specific volume of liquid water at normal pressure between 0 and 100 C.
+"""Specific volume of liquid water and ice at normal pressure between -25
+and 100 C.
 
-First determine the densities (rho) that solve p(rho, T) = 101.325 kPa.  The
-optimization is done using Newton's method.  Specific volume is 1/rho.
+Similar to cp.py, determines the densities (rho) that solves
+p(rho, T) = 101.325 kPa.  The optimization is done using Newton's method.
+Specific volume is then given by 1/rho.
 """
 
 # pylint: disable=invalid-name

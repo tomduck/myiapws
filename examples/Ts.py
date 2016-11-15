@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Pressure-volume phase diagram for water."""
+"""Temperature-entropy isobars for water."""
 
 # pylint: disable=invalid-name
 
