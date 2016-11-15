@@ -22,8 +22,8 @@
 
 Overview:
 
-  This package implements the IAWPS 2011 formulas for the melting and
-  sublimation curves of ordinary water substance.
+  This package implements the IAWPS 2011 formulas for melting and
+  sublimation pressures of liquid water and ice as a function of temperature.
 
 References:
 
