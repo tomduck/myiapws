@@ -71,16 +71,16 @@ Plots
 
 Below are plots from the examples.
 
-![Heat capacity of liquid water.](https://raw.githubusercontent.com/tomduck/myiapws/master/images/cp.svg)
+![Heat capacity of liquid water.](https://rawgit.com/tomduck/myiapws/master/images/cp.svg)
 
-![Volumetric thermal expansion coefficient of liquid water.](https://raw.githubusercontent.com/tomduck/myiapws/master/images/alpha.svg)
+![Volumetric thermal expansion coefficient of liquid water.](https://rawgit.com/tomduck/myiapws/master/images/alpha.svg)
 
-![Specific volume of liquid water and ice.](https://raw.githubusercontent.com/tomduck/myiapws/master/images/cp.svg)
+![Specific volume of liquid water and ice.](https://rawgit.com/tomduck/myiapws/master/images/cp.svg)
 
-![Enthalpies for saturated states.](https://raw.githubusercontent.com/tomduck/myiapws/master/images/h.svg)
+![Enthalpies for saturated states.](https://rawgit.com/tomduck/myiapws/master/images/h.svg)
 
-![Pressure-volume isotherms.](https://raw.githubusercontent.com/tomduck/myiapws/master/images/pv.svg)
+![Pressure-volume isotherms.](https://rawgit.com/tomduck/myiapws/master/images/pv.svg)
 
-![Temperature-entropy isobars.](https://raw.githubusercontent.com/tomduck/myiapws/master/images/Ts.svg)
+![Temperature-entropy isobars.](https://rawgit.com/tomduck/myiapws/master/images/Ts.svg)
 
-![Pressure-temperature coexistence curves.](https://raw.githubusercontent.com/tomduck/myiapws/master/images/pT.svg)
+![Pressure-temperature coexistence curves.](https://rawgit.com/tomduck/myiapws/master/images/pT.svg)
