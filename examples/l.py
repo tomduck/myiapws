@@ -96,9 +96,9 @@ title.set_position([0.5, 1.03])
 pyplot.xlim(150, 700)
 pyplot.ylim(0, 3)
 
-pyplot.text(470, 1.5, r'$L_\mathrm{vap}$', fontsize=14)
-pyplot.text(185, 2.5, r'$L_\mathrm{sub}$', fontsize=14)
-pyplot.text(220, 0.5, r'$L_\mathrm{fus}$', fontsize=14)
+pyplot.text(470, 1.5, r'$\ell_\mathrm{vap}$', fontsize=14)
+pyplot.text(185, 2.5, r'$\ell_\mathrm{sub}$', fontsize=14)
+pyplot.text(225, 0.45, r'$\ell_\mathrm{fus}$', fontsize=14)
 
 pyplot.plot([Tt, Tt], [0, 3], 'k:')
 pyplot.text(Tt, 1.5, r'$T_\mathrm{tp}$', color='k', fontsize=14,
