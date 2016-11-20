@@ -59,6 +59,10 @@ The following examples are given in the `examples/` directory:
 
   * `v.py`: Specific volume of liquid water and ice at normal pressure versus temperature.
 
+  * `h.py`: Enthalpies for saturated states.
+
+  * `l.py`: Enthalpies of transformation.
+
   * `pv.py`: Isotherms on pressure-volume axes for ice, liquid water and water vapour.
 
   * `Ts.py`: Isobars on temperature-entropy axes for liquid water and water vapour.
@@ -78,6 +82,8 @@ Below are plots from the examples.
 ![Specific volume of liquid water and ice.](https://rawgit.com/tomduck/myiapws/master/images/cp.svg)
 
 ![Enthalpies for saturated states.](https://rawgit.com/tomduck/myiapws/master/images/h.svg)
+
+![Enthalpies of transformation.](https://rawgit.com/tomduck/myiapws/master/images/l.svg)
 
 ![Pressure-volume isotherms.](https://rawgit.com/tomduck/myiapws/master/images/pv.svg)
 
