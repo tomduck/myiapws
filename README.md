@@ -79,7 +79,7 @@ Below are plots from the examples.
 
 ![Volumetric thermal expansion coefficient of liquid water.](https://rawgit.com/tomduck/myiapws/master/images/alpha.svg)
 
-![Specific volume of liquid water and ice.](https://rawgit.com/tomduck/myiapws/master/images/cp.svg)
+![Specific volume of liquid water and ice.](https://rawgit.com/tomduck/myiapws/master/images/v.svg)
 
 ![Enthalpies for saturated states.](https://rawgit.com/tomduck/myiapws/master/images/h.svg)
 
