@@ -6,7 +6,7 @@ Myiapws is a python library for the calculation of thermophysical properties of 
 
 The primary use of the library is as an educational tool.  The publications describing the formulations map directly to the code.  The interfaces are simple, fully pythonic and [numpy](http://www.numpy.org/)-capable.
 
-Developers interested in an advanced thermodynamics package covering over 100 species should check out [COOLPROP](http://www.coolprop.org/).
+Developers interested in a thermodynamics package covering over 100 fluids should check out [CoolProp](http://www.coolprop.org/).
 
 
 Installation
