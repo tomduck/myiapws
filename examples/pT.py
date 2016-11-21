@@ -104,7 +104,7 @@ ax = pyplot.gca()
 
 # x-axis ticks and labels
 ax.set_yticks([10**n for n in range(-7, 5, 2)])
-pyplot.xlabel('Temperature ($\mathregular{^{\circ}C}$)', fontsize=14)
+pyplot.xlabel(r'Temperature ($\mathregular{^{\circ}C}$)', fontsize=14)
 
 # y-axis ticks and labels
 ax.set_yticks([10**n for n in range(-7, 5)])
