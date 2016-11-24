@@ -42,7 +42,7 @@ path = parser.parse_args().path
 # Note: I cannot get the solution to converge at the critical pressure,
 # so we use 1.01*pc instead.
 pc = iapws1995.pc
-ps = numpy.array([5e4, 1e6, 5e6, 1.01*pc, 10*pc, 100*pc])  # Pa
+ps = numpy.array([5e3, 1e5, 1e6, 5e6, 1.01*pc, 10*pc, 100*pc])  # Pa
 ss = []
 Ts = []
 
@@ -137,7 +137,8 @@ for p, s, T in zip(ps, ss, Ts):
         i = numpy.searchsorted(s, iapws1995.sc)
         x = (s[i-1]+s[i])/2
         y = T[i-1]
-        label = ('%.0f MPa' if p/1e6 >= 1 else '%.2f MPa') % (p/1e6)
+        label = '%.0f MPa'%(p/1e6) if p/1e6 >= 1 else \
+          '%.0f kPa'%(p/1e3)
         bbox = {'ec':'1', 'fc':'1'}
     elif p == 1.01*iapws1995.pc:
         i = numpy.searchsorted(s, iapws1995.sc)
