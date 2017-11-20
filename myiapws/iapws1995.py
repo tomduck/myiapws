@@ -249,10 +249,14 @@ def C(T):
 def rhosat(T):
     """Saturation liquid and vapour densities (kg/m^3).
 
-    This function is is not officially part of IAPWS 1995.  It does, however,
-    calculate saturation densities from the IAPWS 1995 formulation using the
-    method in [3].  The results are consistent with iapws1992.rhosat_liquid(T)
-    and iapws1992.rhosat_vapor(T) to within experimental errors.
+    This function is is not officially part of IAPWS 1995.  It does,
+    however, calculate saturation densities from the IAPWS 1995
+    formulation using the method in [3].  The results are consistent
+    with iapws1992.rhosat_liquid(T) and iapws1992.rhosat_vapor(T) to 
+    within experimental errors.
+
+    Unless there is a good reason for doing so, you should probably use
+    the IAPWS 1992 formulation instead.
     """
 
     # This function does its own array and critical point management (rather

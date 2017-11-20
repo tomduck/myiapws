@@ -9,7 +9,7 @@ DESCRIPTION = """\
 IAPWS formulations for the thermodynamic properties of ordinary water.
 """
 
-VERSION = '0.1'
+VERSION = '0.2'
 
 setup(name='myiapws',
     version=VERSION,
