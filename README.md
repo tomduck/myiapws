@@ -53,11 +53,11 @@ It is frequently not trivial to draw thermodynamic diagrams given the fundamenta
 
 Code for the following plots may be found in the `examples/` directory:
 
-![Heat capacity of liquid water.](https://rawgit.com/tomduck/myiapws/master/images/cp.svg)
+![Heat capacity of liquid water at normal pressure.](https://rawgit.com/tomduck/myiapws/master/images/cp.svg)
 
-![Volumetric thermal expansion coefficient of liquid water.](https://rawgit.com/tomduck/myiapws/master/images/alpha.svg)
+![Isobaric thermal expansion coefficient of liquid water at normal pressure.](https://rawgit.com/tomduck/myiapws/master/images/alpha.svg)
 
-![Specific volume of liquid water and ice.](https://rawgit.com/tomduck/myiapws/master/images/v.svg)
+![Specific volume of liquid water and ice at normal pressure.](https://rawgit.com/tomduck/myiapws/master/images/v.svg)
 
 ![Enthalpies for saturated states.](https://rawgit.com/tomduck/myiapws/master/images/hsat.svg)
 
@@ -67,4 +67,6 @@ Code for the following plots may be found in the `examples/` directory:
 
 ![Temperature-entropy isobars.](https://rawgit.com/tomduck/myiapws/master/images/Ts.svg)
 
-![Pressure-temperature coexistence curves.](https://rawgit.com/tomduck/myiapws/master/images/coexistence-vurves.svg)
+![Mollier diagram.](https://rawgit.com/tomduck/myiapws/master/images/mollier.svg)
+
+![Coexistence curves.](https://rawgit.com/tomduck/myiapws/master/images/coexistence-vurves.svg)

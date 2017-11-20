@@ -33,6 +33,8 @@ from myiapws import iapws1992, iapws1995
 TMIN = iapws1995.Tt
 TMAX = 1000 + 273.15
 
+SMIN = 0
+SMAX = 10000
 
 # Parse command-line arguments
 parser = argparse.ArgumentParser()
@@ -41,7 +43,7 @@ path = parser.parse_args().path
 
 
 # Isobars and isotherms.  Note: I cannot get the solution to converge at the
-# critical pressure, so we use 1.01*pc instead.
+# critical pressure, so we use 1.015*pc instead.
 pc = iapws1995.pc
 ps = numpy.array([1e3, 1e4, 1e5, 1e6, 1.015*pc, 100e6, 500e6, 2000e6])  # Pa
 Ts = numpy.array([10, 50, 100, 200, 300, 500, 800]) + 273.15  # K
@@ -50,8 +52,6 @@ Ts = numpy.array([10, 50, 100, 200, 300, 500, 800]) + 273.15  # K
 ss1, ss2 = [], []
 hs1, hs2 = [], []
 
-Tmins = []
-
 # Define a function to invert psat = p(Tsat)
 # pylint: disable=redefined-outer-name
 def Tsat(p):
@@ -59,7 +59,7 @@ def Tsat(p):
     if p > iapws1995.pc:
         msg = 'p < pc for water vapor saturation line'
         raise ValueError(msg)
-    return brentq(lambda x: iapws1992.psat(x)-p, iapws1995.Tt, iapws1995.Tc)
+    return brentq(lambda T_: iapws1992.psat(T_)-p, iapws1995.Tt, iapws1995.Tc)
 
 # Determine the piecewise isobars.  Obtain the gas/vapor segments first,
 # followed by the liquid segments.  We don't need to obtain data in the mixed
@@ -75,12 +75,10 @@ for p in ps:
     # Get the temperature series
     T = numpy.linspace(Tmin, Tmax, 300)
 
-    # Get the initial density estimate
-    rhoest = p/(iapws1995.R*Tmax)
-
     # Solve for the densities along the isobar, using the previous
     # result as the next estimate
     rho = []
+    rhoest = p/(iapws1995.R*Tmax)
     for T_ in T[::-1]:
         # pylint: disable=cell-var-from-loop, undefined-loop-variable
         rho.append(newton(lambda rho_: iapws1995.p(rho_, T_)-p, rhoest))
@@ -94,37 +92,36 @@ for p in ps:
     # Save the arrays
     ss1.append(s)
     hs1.append(h)
-    Tmins.append(T[0])
 
 # Liquid phase
 for i, p in enumerate(ps):
-    if p < iapws1995.pc:
 
-        # Get the minimum and maximum temperature
-        Tmin = TMIN
-        Tmax = Tmins[i]
+    if p >= iapws1995.pc:
+        continue
 
-        # Get the temperature series
-        T = numpy.linspace(Tmin, Tmax, 300)
+    # Get the minimum and maximum temperature
+    Tmin = TMIN
+    Tmax = Tsat(p)
 
-        # Get the initial density estimate
-        rhoest = iapws1992.rhosat_liquid(T[-1])
+    # Get the temperature series
+    T = numpy.linspace(Tmin, Tmax, 300)
 
-        # Solve for the densities along the isobar, using the previous
-        # result as the next estimate
-        rho = []
-        for T_ in T[::-1]:
-            rho.append(newton(lambda rho_: iapws1995.p(rho_, T_)-p, rhoest))
-            rhoest = rho[-1]
-        rho = numpy.array(rho)[::-1]
+    # Solve for the densities along the isobar, using the previous
+    # result as the next estimate
+    rho = []
+    rhoest = iapws1992.rhosat_liquid(T[-1])
+    for T_ in T[::-1]:
+        rho.append(newton(lambda rho_: iapws1995.p(rho_, T_)-p, rhoest))
+        rhoest = rho[-1]
+    rho = numpy.array(rho)[::-1]
 
-        # Get the entropies and enthalpies
-        s = iapws1995.s(rho, T)
-        h = iapws1995.h(rho, T)
+    # Get the entropies and enthalpies
+    s = iapws1995.s(rho, T)
+    h = iapws1995.h(rho, T)
 
-        # Concatenate the arrays
-        ss1[i] = numpy.concatenate((s, ss1[i]))
-        hs1[i] = numpy.concatenate((h, hs1[i]))
+    # Concatenate the arrays
+    ss1[i] = numpy.concatenate((s, ss1[i]))
+    hs1[i] = numpy.concatenate((h, hs1[i]))
 
 # Determine the piecewise isotherms.  Obtain the gas/vapor segments first,
 # followed by the liquid segments.  We don't need to obtain data in the mixed
@@ -133,18 +130,11 @@ for i, p in enumerate(ps):
 # Gas/vapor and supercritical fluid phases
 for T in Ts:
 
-    # Get the maximum density estimate
-    if T < iapws1995.Tc:
-        psat = iapws1992.psat(T)
-        rhoest = psat/(iapws1995.R*T)
-
-    # Solve for the densities along the isotherm, using the previous
-    # result as the next estimate.
+    # Get for the densities along the isotherm.
     # pylint: disable=cell-var-from-loop, undefined-loop-variable
-    rhomax = newton(lambda rho_: iapws1995.p(rho_, T)-psat, rhoest) \
-      if T < iapws1995.Tc else \
-      newton(lambda rho_: iapws1995.s(rho_, T)-0, iapws1995.rhoc)
-    rhomin = newton(lambda x: iapws1995.s(x, T)-10000, rhoest/1e4)
+    rhomax = iapws1992.rhosat_vapor(T) if T < iapws1995.Tc else \
+      newton(lambda rho_: iapws1995.s(rho_, T)-SMIN, iapws1995.rhoc)
+    rhomin = newton(lambda rho_: iapws1995.s(rho_, T)-SMAX, 1/(iapws1995.R*T))
     rho = numpy.logspace(numpy.log10(rhomin), numpy.log10(rhomax), 500)
 
     # Get the entropies and enthalpies
@@ -158,18 +148,13 @@ for T in Ts:
 # Liquid phase
 for i, T in enumerate(Ts):
 
-    # Get the minimum density estimate
-    if T < iapws1995.Tc:
-        psat = iapws1992.psat(T)
-        rhoest = iapws1992.rhosat_liquid(T)
-    else:
+    if T >= iapws1995.Tc:
         continue
 
-    # Solve for the densities along the isotherm, using the previous
-    # result as the next estimate.
+    # Get the densities along the isotherm.
     # pylint: disable=cell-var-from-loop, undefined-loop-variable
-    rhomin = newton(lambda rho_: iapws1995.p(rho_, T)-psat, rhoest)
-    rhomax = newton(lambda rho_: iapws1995.s(rho_, T)-0, rhoest*1e3)
+    rhomin = iapws1992.rhosat_liquid(T)
+    rhomax = newton(lambda rho_: iapws1995.s(rho_, T)-0, rhomin*1e3)
     rho = numpy.logspace(numpy.log10(rhomin), numpy.log10(rhomax), 500)
 
     # Get the entropies and enthalpies
@@ -205,7 +190,7 @@ for s, h in zip(ss2, hs2):
 pyplot.plot(ssat_vapor/1000, hsat_vapor/1e6, 'k--', linewidth=1)
 pyplot.plot(ssat_liquid/1000, hsat_liquid/1e6, 'k--', linewidth=1)
 
-pyplot.xlim(0, 10)
+pyplot.xlim(SMIN/1000, SMAX/1000)
 pyplot.ylim(1, 4)
 
 pyplot.xlabel(r'Entropy (kJ/K/kg)')

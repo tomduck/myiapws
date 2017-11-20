@@ -26,6 +26,8 @@ Phase diagrams:
 
   * Ts.py - Temperature-entropy isobars for liquid water and vapour.
 
+  * mollier.py - Mollier diagram; isobars and isotherms on h-s axes.
+
   * coexistence-curves.py - Coexistence curves for vapor, liquid
     water and ice.
 
