@@ -64,7 +64,7 @@ pyplot.plot([-5, 105], [0, 0], 'k:', linewidth=1)
 
 pyplot.xlim(-5, 105)
 
-pyplot.text(33, 2.6, '101.325 kPa', size=9)
+pyplot.text(33, 0.26, '101.325 kPa', size=9)
 
 pyplot.xlabel(r'Temperature ($\mathrm{^{\circ}C}$)')
 pyplot.ylabel('Thermal Expansion\nCoefficient ($\\%/10\\ \\mathrm{K}$)')
