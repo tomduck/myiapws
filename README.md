@@ -49,31 +49,9 @@ The modules are internally documented.  Execute `help(<module-name>)` at the pyt
 Examples
 --------
 
-It is frequently not trivial to draw thermodynamic diagrams given the fundamental equations and their derivatives alone.  The liquid phase formulation, for example, provides thermodynamic functions dependent upon density and temperature.  If one wants to, say, plot heat capacity against pressure and temperature instead then some numerical work needs to be done.
+It is frequently not trivial to draw thermodynamic diagrams given the fundamental equations and their derivatives alone.  The 1995 formulation, for example, provides thermodynamic functions dependent upon density and temperature.  If one wants to, say, plot heat capacity against pressure and temperature instead then some numerical work needs to be done.
 
-The following examples are given in the `examples/` directory:
-
-  * `cp.py`: Isobaric heat capacity of liquid water at normal pressure versus temperature.
-
-  * `alpha.py`: Volumetric thermal expansion coefficient of liquid water at normal pressure versus temperature.
-
-  * `v.py`: Specific volume of liquid water and ice at normal pressure versus temperature.
-
-  * `h.py`: Enthalpies for saturated states.
-
-  * `l.py`: Enthalpies of transformation.
-
-  * `pv.py`: Isotherms on pressure-volume axes for ice, liquid water and water vapour.
-
-  * `Ts.py`: Isobars on temperature-entropy axes for liquid water and water vapour.
-
-  * `pT.py`: Coexistence curves for the different mixed-phases of water.
-
-
-Plots
------
-
-Below are plots from the examples.
+Code for the following plots may be found in the `examples/` directory:
 
 ![Heat capacity of liquid water.](https://rawgit.com/tomduck/myiapws/master/images/cp.svg)
 
@@ -81,7 +59,7 @@ Below are plots from the examples.
 
 ![Specific volume of liquid water and ice.](https://rawgit.com/tomduck/myiapws/master/images/v.svg)
 
-![Enthalpies for saturated states.](https://rawgit.com/tomduck/myiapws/master/images/h.svg)
+![Enthalpies for saturated states.](https://rawgit.com/tomduck/myiapws/master/images/hsat.svg)
 
 ![Enthalpies of transformation.](https://rawgit.com/tomduck/myiapws/master/images/l.svg)
 
@@ -89,4 +67,4 @@ Below are plots from the examples.
 
 ![Temperature-entropy isobars.](https://rawgit.com/tomduck/myiapws/master/images/Ts.svg)
 
-![Pressure-temperature coexistence curves.](https://rawgit.com/tomduck/myiapws/master/images/pT.svg)
+![Pressure-temperature coexistence curves.](https://rawgit.com/tomduck/myiapws/master/images/coexistence-vurves.svg)
