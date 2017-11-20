@@ -58,7 +58,8 @@ for T in Ts:
 
     # Determine the minimum density.  Estimate it using the ideal gas law.
     # pylint: disable=cell-var-from-loop
-    rhomin = newton(lambda x: iapws1995.p(x, T) - PMIN, PMIN/(iapws1995.R*T))
+    rhomin = newton(lambda rho_: iapws1995.p(rho_, T) - PMIN,
+                    PMIN/(iapws1995.R*T))
 
     # Determine the maximum density. For Tt < T < Tc use the liquid-vapor
     # saturation density from IAPWS 1992; otherwise solve for it using an
@@ -128,7 +129,7 @@ rhosat_liquid = iapws1992.rhosat_liquid(Ts_)
 Ts_ = numpy.linspace(iapws1995.Tt-50, iapws1995.Tt, 100)
 psat2 = iapws2011.psubl_ice_Ih(Ts_)
 # pylint: disable=cell-var-from-loop
-rhosat_vapor2 = numpy.array([newton(lambda x: iapws1995.p(x, T) - p, \
+rhosat_vapor2 = numpy.array([newton(lambda rho_: iapws1995.p(rho_, T) - p, \
                              p/(iapws1995.R*T)) for T, p in zip(Ts_, psat2)])
 rhosat_solid2 = iapws2006.rho(Ts_, p)
 

@@ -71,7 +71,7 @@ pmelt = iapws2011.pmelt_ice_Ih(T3)
 hsat_ice3 = iapws2006.h(T3, pmelt)
 
 # pylint: disable=cell-var-from-loop
-rho = numpy.array([newton(lambda x: iapws1995.p(x, T_) - p_, 1000) \
+rho = numpy.array([newton(lambda rho_: iapws1995.p(rho_, T_) - p_, 1000) \
                    for p_, T_ in zip(pmelt, T3)])
 hsat_liquid3 = iapws1995.h(rho, T3)
 
