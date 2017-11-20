@@ -69,4 +69,4 @@ Code for the following plots may be found in the `examples/` directory:
 
 ![Mollier diagram.](https://rawgit.com/tomduck/myiapws/master/images/mollier.svg)
 
-![Coexistence curves.](https://rawgit.com/tomduck/myiapws/master/images/coexistence-vurves.svg)
+![Coexistence curves.](https://rawgit.com/tomduck/myiapws/master/images/coexistence-curves.svg)
