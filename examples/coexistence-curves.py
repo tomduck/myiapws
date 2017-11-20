@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-# Copyright (C) 2016 Thomas J. Duck
+# Copyright (C) 2016-2017 Thomas J. Duck
 #
 # Thomas J. Duck <tomduck@tomduck.ca>
 # Department of Physics and Atmospheric Science, Dalhousie University
@@ -36,10 +36,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-o', dest='path')
 path = parser.parse_args().path
 
-#pyplot.rcParams['ytick.major.pad'] = '5'
-#pyplot.rcParams['mathtext.fontset'] = 'stixsans'
 
-fig = pyplot.figure(figsize=(4.5, 4.5))
+fig = pyplot.figure(figsize=(4, 4))
+fig.set_tight_layout(True)
 
 T0 = 273.15  # Temperature conversion offset
 
@@ -59,52 +58,48 @@ Ts = [numpy.linspace(251.165, 273.16, 50),
       numpy.linspace(50.0, 273.16, 100),
       numpy.linspace(273.16, 647.096, 100)]
 
-colors = ['b']*5 + ['g', 'r']
-
-
 # Phase coexistence lines
-for p, T, color in zip(ps, Ts, colors):
-    pyplot.semilogy(T-T0, p(T)/1e6, 'b-', linewidth=2, color=color)
+for p, T in zip(ps, Ts):
+    pyplot.semilogy(T-T0, p(T)/1e6, 'k-', linewidth=1)
 
 # Triple and critical points markers
 for Tstar, pstar in \
     zip([273.16, 251.165, 256.164, 273.31, 355, 647.096], \
         [611.657e-6, 208.566, 350.1, 632.4, 2216, 22.064]):
-    markersize = 6 if Tstar == 273.16 or Tstar == 647.096 else 4
-    color = 'r' if Tstar == 647.096 else 'b'
-    pyplot.plot([Tstar-T0], [pstar], 'bo', markersize=markersize, color=color)
+    color = 'k' if Tstar == 647.096 else 'k'
+    pyplot.plot([Tstar-T0], [pstar], 'ko', markersize=4, color=color)
 
 # Triple point and critical point labels
-pyplot.text(290-T0, 1e-4, 'Triple\npoint')
-pyplot.text(610-T0, 50, 'Critical\npoint')
+pyplot.text(290-T0, 1e-4, 'Triple\npoint', fontsize=9)
+pyplot.text(610-T0, 50, 'Critical\npoint', fontsize=9)
 
 # Dashed lines separating ice phases
-pyplot.plot([210-T0, 251.165-T0], [208.566]*2, 'b--')
-pyplot.plot([215-T0, 256.164-T0], [800, 350.1], 'b--')
-pyplot.plot([240-T0, 273.31-T0], [3000, 800], 'b--')
-pyplot.plot([350-T0, 355-T0], [12000, 2216], 'b--')
+pyplot.plot([210-T0, 251.165-T0], [208.566]*2, 'k--')
+pyplot.plot([215-T0, 256.164-T0], [800, 350.1], 'k--')
+pyplot.plot([240-T0, 273.31-T0], [3000, 800], 'k--')
+pyplot.plot([350-T0, 355-T0], [12000, 2216], 'k--')
 
 # Ice phase labels
-pyplot.text(220-T0, 2, 'Ih', fontsize=10)
-pyplot.text(205-T0, 270, 'III', fontsize=10)
-pyplot.text(230-T0, 800, 'V', fontsize=10)
-pyplot.text(290-T0, 3000, 'VI', fontsize=10)
-pyplot.text(415-T0, 6000, 'VII', fontsize=10)
+pyplot.text(220-T0, 2, 'Ih', fontsize=9)
+pyplot.text(200-T0, 270, 'III', fontsize=9)
+pyplot.text(230-T0, 800, 'V', fontsize=9)
+pyplot.text(290-T0, 3000, 'VI', fontsize=9)
+pyplot.text(415-T0, 6000, 'VII', fontsize=9)
 
 # Main phase labels
-pyplot.text(400-T0, 35, 'Liquid')
-pyplot.text(450-T0, 2e-2, 'Vapour')
-pyplot.text(198-T0, 2e-2, 'Solid')
+pyplot.text(50, 2, 'Liquid', fontsize=9)
+pyplot.text(450-T0, 2e-2, 'Vapour', fontsize=9)
+pyplot.text(200-T0, 2e-2, 'Solid', fontsize=9)
 
 # Standard pressure line
-pyplot.plot([190-T0, 720-T0], [101.325e-3]*2, 'k:', linewidth=1.5)
+pyplot.plot([190-T0, 720-T0], [101.325e-3]*2, 'k:', linewidth=1)
 
 # Axes
 ax = pyplot.gca()
 
 # x-axis ticks and labels
 ax.set_yticks([10**n for n in range(-7, 5, 2)])
-pyplot.xlabel(r'Temperature ($\mathregular{^{\circ}C}$)', fontsize=14)
+pyplot.xlabel(r'Temperature ($\mathregular{^{\circ}C}$)')
 
 # y-axis ticks and labels
 ax.set_yticks([10**n for n in range(-7, 5)])
@@ -112,13 +107,11 @@ ax.set_yticklabels(['', r'$\mathregular{1\ Pa}$', '', '',
                     r'$\mathregular{1\ kPa}$', '', '',
                     r'$\mathregular{1\ MPa}$', '', '',
                     r'$\mathregular{1\ GPa}$', ''])
-pyplot.ylabel(r'Pressure', fontsize=14)
+pyplot.ylabel('Pressure')
 
 # Axis limits
 pyplot.xlim(190-T0, 720-T0)
 pyplot.ylim(1.e-7, 2.e4)
-
-pyplot.tight_layout()
 
 
 # Inset plot ----------
@@ -130,29 +123,27 @@ Ts = [numpy.linspace(273.12, 273.16, 100),
       numpy.linspace(273.12, 273.16, 100),
       numpy.linspace(273.16, 273.20, 100)]
 
-colors = ['b', 'g', 'r']
-
 # Axes
 ax_inset = fig.add_axes([0.6, 0.25, 0.3, 0.2])
 
 # Coexistence curves
-for p, T, color in zip(ps, Ts, colors):
-    ax_inset.semilogy(T-T0, p(T)/1e6, 'b-', linewidth=2, color=color)
+for p, T in zip(ps, Ts):
+    ax_inset.semilogy(T-T0, p(T)/1e6, 'k-', linewidth=1)
 
 # Triple point
-ax_inset.plot(273.16-T0, 611.657e-6, 'bo', markersize=6)
+ax_inset.plot(273.16-T0, 611.657e-6, 'ko', markersize=4)
 
 # Standard pressure line
-ax_inset.plot([200.-T0, 720.-T0], [101.325e-3]*2, 'k:', linewidth=1.5)
+ax_inset.plot([200.-T0, 720.-T0], [101.325e-3]*2, 'k:', linewidth=1)
 
 # Solid and liquid markers
-pyplot.text(273.135-T0, 5.e-3, 'S')
-pyplot.text(273.168-T0, 5.e-3, 'L')
+pyplot.text(273.135-T0, 5.e-3, 'S', fontsize=9)
+pyplot.text(273.168-T0, 5.e-3, 'L', fontsize=9)
 
 # x-axis ticks and labels
 ax_inset.set_xticks([273.13-T0, 273.15-T0, 273.17-T0])
 ax_inset.xaxis.set_minor_locator(ticker.FixedLocator([273.14-T0, 273.16-T0]))
-ax_inset.set_xticklabels(['-0.02', '0', '0.02'])
+ax_inset.set_xticklabels(['-0.02', '0', '0.02'], size=9)
 
 # y-axis ticks and labels
 ax_inset.set_yticks([10**n for n in range(-3, 0, 1)])
