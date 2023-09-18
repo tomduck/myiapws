@@ -36,7 +36,7 @@ def isscalar(x):
 
 def asscalar(x):
     """Returns value as a scalar."""
-    return numpy.asscalar(numpy.asarray(x))
+    return numpy.asarray(x).item()
 
 def arrayfunc(func):
     """Decorator to adapt functions for array input."""
