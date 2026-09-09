@@ -12,13 +12,16 @@ Developers interested in an advanced thermodynamics package covering over 100 fl
 Installation
 ------------
 
-Install into python3 by executing (as root)
+Install with
 
 ~~~
-# pip3 install git+https://github.com/tomduck/myiapws.git
+$ pip3 install git+https://github.com/tomduck/myiapws.git
 ~~~
 
-Alternatively, download the source and run (as root) `setup.py install`.
+Alternatively, download the source and run `pip3 install .` from the project root.
+
+The example scripts in `examples/` additionally require `matplotlib`. Pull it in with the
+`examples` extra, e.g. `pip3 install ".[examples]"` from the project root.
 
 The library should be tested (as a normal user) by executing
 

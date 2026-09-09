@@ -1,3 +1,5 @@
 build
 dist
 myiapws.egg-info
+CLAUDE.md
+__pycache__

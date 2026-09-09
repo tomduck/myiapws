@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "myiapws"
+version = "0.3"
+description = "IAPWS formulations for the thermodynamic properties of ordinary water."
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [{name = "Thomas J. Duck", email = "tomduck@tomduck.ca"}]
+keywords = ["Thermophysical properties of water"]
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Environment :: Console",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+dependencies = ["numpy"]
+
+[project.optional-dependencies]
+examples = ["matplotlib"]
+
+[project.urls]
+Homepage = "https://github.com/tomduck/myiapws"
+Download = "https://github.com/tomduck/myiapws/tarball/0.3"
+
+[tool.setuptools.packages.find]
+include = ["myiapws*"]
